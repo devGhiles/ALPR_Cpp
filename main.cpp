@@ -15,6 +15,7 @@ int main() {
     // perform lp location
     Mat lp;
     localize_license_plate(img, lp);
+    lp.convertTo(lp, CV_8UC1);
 
     // show the lp
     imshow("LP", lp);
