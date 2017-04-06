@@ -6,6 +6,8 @@
 #define ALPR_CPP_LOCATION_H
 
 #include <opencv2/opencv.hpp>
+#include "wavelet.h"
+#include "../utils/opencv.h"
 
 using namespace cv;
 
