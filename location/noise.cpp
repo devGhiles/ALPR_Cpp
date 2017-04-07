@@ -8,6 +8,7 @@ void remove_noise_from_v(Mat& v, float brightness_threshold, int long_line_thres
     vector<pair<int, int>> lines;  // starting pixels, (row, col)
     vector<int> heights;  // heights[i] corresponds to lines[i]
     get_lines_and_heights(v, brightness_threshold, lines, heights);
+    std::cout << heights.size() << std::endl;
 
     remove_long_lines(v, lines, heights, long_line_threshold);
 
@@ -19,7 +20,7 @@ void remove_noise_from_h(Mat& h) {
 
 }
 
-void get_lines_and_heights(Mat v, float brightness_threshold, vector<pair<int, int>> lines, vector<int> heights) {
+void get_lines_and_heights(Mat v, float brightness_threshold, vector<pair<int, int>>& lines, vector<int>& heights) {
     int current_line = -1;
 
     for (int col = 0; col < v.cols; col++) {
@@ -44,7 +45,7 @@ void get_lines_and_heights(Mat v, float brightness_threshold, vector<pair<int, i
     }
 }
 
-void remove_long_lines(Mat& v, vector<pair<int, int>> lines, vector<int> heights, int long_line_threshold) {
+void remove_long_lines(Mat& v, vector<pair<int, int>>& lines, vector<int>& heights, int long_line_threshold) {
     vector<int> lines_to_delete;
 
     for (uint i = 0; i < heights.size(); i++) {
@@ -65,7 +66,7 @@ void remove_vertical_line(Mat& v, int row, int col, int height) {
     }
 }
 
-void delete_lines(vector<pair<int, int>> lines, vector<int> heights, vector<int> lines_to_delete) {
+void delete_lines(vector<pair<int, int>>& lines, vector<int>& heights, vector<int> lines_to_delete) {
     sort(lines_to_delete.begin(), lines_to_delete.end());
     reverse(lines_to_delete.begin(), lines_to_delete.end());
     for (int line : lines_to_delete) {
@@ -74,7 +75,7 @@ void delete_lines(vector<pair<int, int>> lines, vector<int> heights, vector<int>
     }
 }
 
-void remove_short_lines(Mat& v, vector<pair<int, int>> lines, vector<int> heights, double avg_height) {
+void remove_short_lines(Mat& v, vector<pair<int, int>>& lines, vector<int>& heights, double avg_height) {
     vector<int> lines_to_delete;
     for (uint i = 0; i < heights.size(); i++) {
         if (heights[i] < avg_height) {
