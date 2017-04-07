@@ -10,5 +10,6 @@
 using namespace cv;
 
 void convert_to_grayscale(Mat src, Mat& dst);
+float average_of_positives(Mat& img);
 
 #endif //ALPR_CPP_OPENCV_H

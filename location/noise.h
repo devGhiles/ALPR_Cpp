@@ -6,6 +6,7 @@
 #define ALPR_CPP_NOISE_H
 
 #include <opencv2/opencv.hpp>
+#include "../utils/opencv.h"
 
 using namespace std;
 using namespace cv;

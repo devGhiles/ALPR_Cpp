@@ -15,9 +15,14 @@ void localize_license_plate(Mat src, Mat& dst) {
 
     // DWT (Haar Discrete Wavelet Transform)
     dwt2(gray, h, v);
+    Mat h_copy;
+    h.convertTo(h_copy, CV_8UC1);
+    imshow("Before", h_copy);
+    waitKey(0);
 
     // Denoising
     remove_noise_from_v(v, brightness_threshold, long_line_threshold);
+    remove_noise_from_h(h);
 
-    dst = v;
+    dst = h;
 }

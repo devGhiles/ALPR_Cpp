@@ -8,7 +8,6 @@ void remove_noise_from_v(Mat& v, float brightness_threshold, int long_line_thres
     vector<pair<int, int>> lines;  // starting pixels, (row, col)
     vector<int> heights;  // heights[i] corresponds to lines[i]
     get_lines_and_heights(v, brightness_threshold, lines, heights);
-    std::cout << heights.size() << std::endl;
 
     remove_long_lines(v, lines, heights, long_line_threshold);
 
@@ -17,7 +16,14 @@ void remove_noise_from_v(Mat& v, float brightness_threshold, int long_line_thres
 }
 
 void remove_noise_from_h(Mat& h) {
-
+    float avg = average_of_positives(h);
+    for (int row = 0; row < h.rows; row++) {
+        for (int col = 0; col < h.cols; col++) {
+            if (h.at<float>(row, col) < avg) {
+                h.at<float>(row, col) = 0.0f;
+            }
+        }
+    }
 }
 
 void get_lines_and_heights(Mat v, float brightness_threshold, vector<pair<int, int>>& lines, vector<int>& heights) {
