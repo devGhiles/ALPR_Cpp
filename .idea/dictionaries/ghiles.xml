@@ -2,6 +2,7 @@
   <dictionary name="ghiles">
     <words>
       <w>alpr</w>
+      <w>denoising</w>
       <w>ghiles</w>
       <w>grayscale</w>
       <w>haar</w>

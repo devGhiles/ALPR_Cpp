@@ -7,6 +7,7 @@
 
 #include <opencv2/opencv.hpp>
 #include "wavelet.h"
+#include "noise.h"
 #include "../utils/opencv.h"
 
 using namespace cv;
