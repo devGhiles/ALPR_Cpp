@@ -9,5 +9,6 @@ int main() {
     namedWindow("Test", CV_WINDOW_AUTOSIZE);
     imshow("Test", img);
     waitKey(0);
+
     return 0;
 }
