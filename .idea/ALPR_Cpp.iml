@@ -5,10 +5,14 @@
       <sourceFolder url="file://$MODULE_DIR$/main.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/location/wavelet.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/location/noise.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/location/transitions.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/location/exact_location.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/location/location.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/location/exact_location.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/location/wavelet.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/location/location.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/location/noise.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/location/transitions.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/utils/opencv.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/utils/opencv.h" isTestSource="false" />

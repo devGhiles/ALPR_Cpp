@@ -7,11 +7,10 @@ using namespace cv;
 
 int main() {
     // read and show the original image
-//    char filename[] = "images/medialab/1.jpg";
-    char filename[] = "images/sliding.png";
+//    char filename[] = "images/sliding.png";
+    char filename[] = "images/medialab/1.jpg";
     Mat img = imread(filename, 1);
-    imshow("Image", img);
-    waitKey(0);
+    show(img, "Image");
 
     // perform lp location
     Mat lp;
@@ -19,7 +18,6 @@ int main() {
     lp.convertTo(lp, CV_8UC1);
 
     // show the lp
-    imshow("LP", lp);
-    waitKey(0);
+    show(lp, "LP");
     return 0;
 }

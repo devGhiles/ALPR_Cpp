@@ -8,6 +8,8 @@
 #include <opencv2/opencv.hpp>
 #include "wavelet.h"
 #include "noise.h"
+#include "transitions.h"
+#include "exact_location.h"
 #include "../utils/opencv.h"
 
 using namespace cv;
