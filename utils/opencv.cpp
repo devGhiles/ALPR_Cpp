@@ -46,8 +46,8 @@ float average_of_positives(Mat &img) {
 }
 
 void subimg(Mat src, Mat &dst, int start_row, int end_row, int start_col, int end_col) {
-    int width = end_col - start_col;
-    int height = end_row - start_row;
+    int width = end_col - start_col + 1;
+    int height = end_row - start_row + 1;
     dst = src(Rect(start_row, start_col, width, height)).clone();
 }
 

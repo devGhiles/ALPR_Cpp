@@ -14,7 +14,7 @@ void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_point
 
         rough_location(src, row, col, height, ratio, start_row, end_row, start_col, end_col);
 //        col_location(v, start_row, end_row, start_col, end_col, window_width_prop);
-//        row_location(v, start_row, end_row, start_col, end_col);
+        row_location(v, start_row, end_row, start_col, end_col);
 
         // save the candidate plate
         save_candidate_plate(src, candidate_plates, start_row, end_row, start_col, end_col);

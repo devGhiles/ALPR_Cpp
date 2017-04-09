@@ -27,7 +27,6 @@ void localize_license_plate(Mat src, Mat &dst) {
     // Candidate points (from where we have enough transitions)
     vector<pair<int, int>> candidate_points;
     get_candidate_points(v, h, bs_prop, transitions_threshold, top_lines_to_check, p, candidate_points);
-    test_candidate_points(src, candidate_points);
 
     // Candidate plates (from candidate points)
     vector<Mat> candidate_plates;
