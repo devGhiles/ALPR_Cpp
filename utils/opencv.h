@@ -18,4 +18,10 @@ void convert_to_grayscale(Mat src, Mat &dst);
 
 float average_of_positives(Mat &img);
 
+void subimg(Mat src, Mat &dst, int start_row, int end_row, int start_col, int end_col);
+
+double average_mat_float(Mat m);
+
+double average_submat_float(Mat m, int start_row, int end_row, int start_col, int end_col);
+
 #endif //ALPR_CPP_OPENCV_H

@@ -11,8 +11,8 @@ void localize_license_plate(Mat src, Mat &dst) {
     int long_line_threshold = 100;
     int bs_prop = 5;
     int transitions_threshold = 8;
-    int top_lines_to_check = 5;
-    double p = 0.5;
+    int top_lines_to_check = 10;
+    double p = 0.2;
 
     // convert the image to grayscale
     convert_to_grayscale(src, gray);
@@ -26,13 +26,13 @@ void localize_license_plate(Mat src, Mat &dst) {
 
     // Candidate points (from where we have enough transitions)
     vector<pair<int, int>> candidate_points;
-    get_candidate_points(v, h, 5, 8, 5, 0.5, candidate_points);
+    get_candidate_points(v, h, bs_prop, transitions_threshold, top_lines_to_check, p, candidate_points);
+    test_candidate_points(src, candidate_points);
 
     // Candidate plates (from candidate points)
     vector<Mat> candidate_plates;
     get_candidate_plates(src, v, candidate_points, candidate_plates);
 
-    if (!candidate_plates.empty()) {
-        dst = candidate_plates[0].clone();
-    }
+    // Choose a plate between candidates
+    choose_plate(candidate_plates, dst);
 }

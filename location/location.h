@@ -10,6 +10,8 @@
 #include "noise.h"
 #include "transitions.h"
 #include "exact_location.h"
+#include "plate_chooser.h"
+#include "tests.h"
 #include "../utils/opencv.h"
 
 using namespace cv;

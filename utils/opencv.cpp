@@ -44,3 +44,26 @@ float average_of_positives(Mat &img) {
 
     return sum / elements_count;
 }
+
+void subimg(Mat src, Mat &dst, int start_row, int end_row, int start_col, int end_col) {
+    int width = end_col - start_col;
+    int height = end_row - start_row;
+    dst = src(Rect(start_row, start_col, width, height)).clone();
+}
+
+double average_mat_float(Mat m) {
+    double sum = 0.0;
+    for (int row = 0; row < m.rows; row++) {
+        for (int col = 0; col < m.cols; col++) {
+            sum += m.at<float>(row, col);
+        }
+    }
+
+    return sum / (m.rows * m.cols);
+}
+
+double average_submat_float(Mat m, int start_row, int end_row, int start_col, int end_col) {
+    Mat submat;
+    subimg(m, submat, start_row, end_row, start_col, end_col);
+    return average_mat_float(submat);
+}
