@@ -3,7 +3,6 @@
 //
 
 #include "exact_location.h"
-#include "tests.h"
 
 void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_points, vector<Mat> &candidate_plates) {
     int height = 10, ratio = 10, window_width_prop = 3;
@@ -51,7 +50,7 @@ void col_location(Mat v, int start_row, int end_row, int &start_col, int &end_co
 
     // Left hand side location
     double max_avg = -1.0;
-    int final_start_col = -1;
+    int final_start_col = start_col;
     for (int window_start_col = start_col; window_start_col < start_col + window_width; window_start_col++) {
         int window_end_col = window_start_col + window_width;
         double current_avg = average_submat(v, window_start_row, window_end_row, window_start_col,
@@ -65,7 +64,7 @@ void col_location(Mat v, int start_row, int end_row, int &start_col, int &end_co
 
     // Right hand side location
     max_avg = -1.0;
-    int final_end_col = -1;
+    int final_end_col = end_col;
     for (int window_end_col = end_col; window_end_col > end_col - window_width; window_end_col--) {
         int window_start_col = window_end_col - window_width;
         double current_avg = average_submat(v, window_start_row, window_end_row, window_start_col,
