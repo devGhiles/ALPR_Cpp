@@ -31,6 +31,7 @@ void localize_license_plate(Mat src, Mat &dst) {
     // Candidate plates (from candidate points)
     vector<Mat> candidate_plates;
     get_candidate_plates(src, v, candidate_points, candidate_plates);
+    test_candidate_plates(candidate_plates);
 
     // Choose a plate between candidates
     choose_plate(candidate_plates, dst);

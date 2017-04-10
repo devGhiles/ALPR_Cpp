@@ -24,4 +24,6 @@ double average_mat_float(Mat m);
 
 double average_submat_float(Mat m, int start_row, int end_row, int start_col, int end_col);
 
+double average(Mat m);
+
 #endif //ALPR_CPP_OPENCV_H

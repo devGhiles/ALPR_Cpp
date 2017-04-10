@@ -3,6 +3,7 @@
 //
 
 #include "exact_location.h"
+#include "tests.h"
 
 void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_points, vector<Mat> &candidate_plates) {
     int height = 10, ratio = 10, window_width_prop = 3;
@@ -24,22 +25,22 @@ void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_point
 void rough_location(Mat img, int row, int col, int height, int ratio, int &start_row, int &end_row, int &start_col,
                     int &end_col) {
     start_row = row;
-    end_row = row + height;
-    if (end_row >= img.rows / 2) {
-        end_row = (img.rows / 2) - 1;
+    end_row = row + height - 1;
+    if (end_row >= (img.rows - 1) / 2) {
+        end_row = ((img.rows - 1) / 2) - 1;
     }
 
     start_col = col;
     end_col = start_col + ((end_row - start_row) * ratio);
-    if (end_col >= img.cols / 2) {
-        end_col = (img.cols / 2) - 1;
+    if (end_col >= (img.cols - 1) / 2) {
+        end_col = ((img.cols - 1) / 2) - 1;
     }
 }
 
 void
 save_candidate_plate(Mat src, vector<Mat> &candidate_plates, int start_row, int end_row, int start_col, int end_col) {
     Mat lp;
-    subimg(src, lp, start_row, end_row, start_col, end_col);
+    subimg(src, lp, 2 * start_row, 2 * end_row, 2 * start_col, 2 * end_col);
     candidate_plates.push_back(lp);
 }
 
@@ -87,7 +88,7 @@ void row_location(Mat v, int &start_row, int &end_row, int start_col, int end_co
     for (row_top = start_row; row_top >= 0; row_top--) {
         Mat line;
         subimg(v, line, row_top, row_top, start_col, end_col);
-        if (average_mat_float(line) <= 2) {  // TODO: something else than <= 2
+        if (average(line) <= 2) {  // TODO: something else than <= 2
             break;
         }
     }
@@ -96,7 +97,7 @@ void row_location(Mat v, int &start_row, int &end_row, int start_col, int end_co
     for (row_bottom = end_row; row_bottom < v.rows; row_bottom++) {
         Mat line;
         subimg(v, line, row_bottom, row_bottom, start_col, end_col);
-        if (average_mat_float(line) <= 2) {  // TODO: something else than <= 2
+        if (average(line) <= 2) {  // TODO: something else than <= 2
             break;
         }
     }

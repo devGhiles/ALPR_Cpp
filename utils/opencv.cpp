@@ -48,7 +48,7 @@ float average_of_positives(Mat &img) {
 void subimg(Mat src, Mat &dst, int start_row, int end_row, int start_col, int end_col) {
     int width = end_col - start_col + 1;
     int height = end_row - start_row + 1;
-    dst = src(Rect(start_row, start_col, width, height)).clone();
+    dst = src(Rect(start_col, start_row, width, height)).clone();
 }
 
 double average_mat_float(Mat m) {
@@ -66,4 +66,8 @@ double average_submat_float(Mat m, int start_row, int end_row, int start_col, in
     Mat submat;
     subimg(m, submat, start_row, end_row, start_col, end_col);
     return average_mat_float(submat);
+}
+
+double average(Mat m) {
+    return mean(m).val[0];
 }
