@@ -27,7 +27,7 @@ void OCRTarbia::run(){
 
     vector<Mat> deskewedTrainCells;
     vector<Mat> deskewedTestCells;
-    //CreateDeskewedTrainTest(deskewedTrainCells,deskewedTestCells,trainCells,testCells);
+    CreateDeskewedTrainTest(deskewedTrainCells,deskewedTestCells,trainCells,testCells);
     cout << "Deskew ##" << endl;
 
     vector<vector<float> > trainHOT;
@@ -41,8 +41,8 @@ void OCRTarbia::run(){
     Mat trainMat(trainHOT.size(),descriptor_size,CV_32FC1);
     Mat testMat(testHOT.size(),descriptor_size,CV_32FC1);
     stringstream ss(stringstream::in | stringstream::out);
-    ss << "../SVM/trainData.jpg";imwrite(ss.str(),trainMat);ss.flush();
-    ss << "../SVM/testData.jpg";imwrite(ss.str(),testMat);
+    ss << "../Assets/SVM/trainData.jpg";imwrite(ss.str(),trainMat);ss.flush();
+    ss << "../Assets/SVM/testData.jpg";imwrite(ss.str(),testMat);
 
     ConvertVectortoMatrix(trainHOT,testHOT,trainMat,testMat);
 
@@ -234,7 +234,7 @@ void OCRTarbia::SVMevaluate(Mat &testResponse,float &count, float &accuracy,vect
     accuracy = (count/testResponse.rows)*100;
 }
 
-/*void OCRTarbia::CreateDeskewedTrainTest(vector<Mat> &deskewedTrainCells,vector<Mat> &deskewedTestCells, vector<Mat> &trainCells, vector<Mat> &testCells){
+void OCRTarbia::CreateDeskewedTrainTest(vector<Mat> &deskewedTrainCells,vector<Mat> &deskewedTestCells, vector<Mat> &trainCells, vector<Mat> &testCells){
 
     for(int i=0;i<trainCells.size();i++){
 
@@ -255,12 +255,12 @@ Mat OCRTarbia::deskew(Mat& img){
         return img.clone();
     }
     float skew = m.mu11/m.mu02;
-    Mat warpMat = (Mat_<float>(2, 3) << 1, skew, -0.5 * SZ * skew, 0, 1, 0); // was Mat
+    Mat warpMat(1,1,CV_32FC1); warpMat = (Mat_<float>(2, 3) << 1, skew, -0.5 * SZ * skew, 0, 1, 0); // was Mat
     Mat imgOut = Mat::zeros(img.rows, img.cols, img.type());
     warpAffine(img, imgOut, warpMat, imgOut.size(),affineFlags);
 
     return imgOut;
-}*/
+}
 
 void OCRTarbia::ConvertVectortoMatrix(vector<vector<float> > &trainHOT, vector<vector<float> > &testHOT, Mat &trainMat, Mat &testMat)
 {
