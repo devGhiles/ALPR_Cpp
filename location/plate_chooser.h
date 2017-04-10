@@ -12,4 +12,10 @@ using namespace cv;
 
 void choose_plate(vector<Mat> candidate_plates, Mat &chosen_one);
 
+void choose_lowest(vector<Mat> candidate_plates, Mat &chosen_one);
+
+void choose_highest_average_brightness(vector<Mat> candidate_plates, Mat &chosen_one);
+
+void choose_highest_average_brightness_in_v(vector<Mat> candidate_plates, Mat &chosen_one);
+
 #endif //ALPR_CPP_PLATE_CHOOSER_H

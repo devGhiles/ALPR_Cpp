@@ -8,7 +8,7 @@ using namespace cv;
 int main() {
     // read and show the original image
 //    char filename[] = "images/sliding.png";
-    char filename[] = "images/slika/1.jpg";
+    char filename[] = "images/slika/7.jpg";
     Mat img = imread(filename, 1);
     show(img, "Image");
 

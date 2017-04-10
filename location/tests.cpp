@@ -17,3 +17,9 @@ void test_candidate_points(Mat src, vector<pair<int, int>> candidate_points) {
         show(src_copy, "Candidate Points Test");
     }
 }
+
+void test_candidate_plates(vector<Mat> candidate_plates) {
+    for (Mat plate : candidate_plates) {
+        show(plate, "Candidate Plates Test");
+    }
+}
