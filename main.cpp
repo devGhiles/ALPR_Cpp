@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "Source/OCR/OCR.h"
-#include "Source/Location/Location.h"
+#include "Source/Location/location.h"
 
 using namespace std;
 using namespace cv;
@@ -51,13 +51,13 @@ int main() {
     // char filename[] = "images/sliding.png";
     char filename[] = "images/slika/7.jpg";
     Mat img = imread(filename, 1);
-    imshow(img, "Image");
+    imshow("Image", img);
 
     // perform lp location
     Mat lp;
     localize_license_plate(img, lp);
 
     // show the lp
-    imshow(lp, "LP");
+    imshow("LP", lp);
     return 0;
 }
