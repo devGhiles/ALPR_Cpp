@@ -14,7 +14,7 @@ void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_point
         int start_row, end_row, start_col, end_col;
 
         rough_location(src, row, col, height, ratio, start_row, end_row, start_col, end_col);
-//        col_location(v, start_row, end_row, start_col, end_col, window_width_prop);
+        col_location(v, start_row, end_row, start_col, end_col, window_width_prop);
         row_location(v, start_row, end_row, start_col, end_col);
 
         // save the candidate plate
@@ -46,7 +46,7 @@ save_candidate_plate(Mat src, vector<Mat> &candidate_plates, int start_row, int 
 
 void col_location(Mat v, int start_row, int end_row, int &start_col, int &end_col, int window_width_prop) {
     double window_brightness_threshold = get_window_brightness_threshold(v, start_row, end_row, start_col, end_col);
-    int window_width = (end_col - start_col) / window_width_prop;
+    int window_width = (end_col - start_col + 1) / window_width_prop;
     int window_start_row = start_row, window_end_row = end_row;
 
     // Left hand side location
@@ -54,7 +54,7 @@ void col_location(Mat v, int start_row, int end_row, int &start_col, int &end_co
     int final_start_col = -1;
     for (int window_start_col = start_col; window_start_col < start_col + window_width; window_start_col++) {
         int window_end_col = window_start_col + window_width;
-        double current_avg = average_submat_float(v, window_start_row, window_end_row, window_start_col,
+        double current_avg = average_submat(v, window_start_row, window_end_row, window_start_col,
                                                   window_end_col);
         if (current_avg > window_brightness_threshold) {
             final_start_col = window_start_col;
@@ -68,7 +68,7 @@ void col_location(Mat v, int start_row, int end_row, int &start_col, int &end_co
     int final_end_col = -1;
     for (int window_end_col = end_col; window_end_col > end_col - window_width; window_end_col--) {
         int window_start_col = window_end_col - window_width;
-        double current_avg = average_submat_float(v, window_start_row, window_end_row, window_start_row,
+        double current_avg = average_submat(v, window_start_row, window_end_row, window_start_col,
                                                   window_end_col);
         if (current_avg > window_brightness_threshold) {
             final_end_col = window_end_col;
@@ -77,7 +77,7 @@ void col_location(Mat v, int start_row, int end_row, int &start_col, int &end_co
         }
     }
 
-    // get results
+    // save the results
     start_col = max(0, final_start_col);
     end_col = min(v.cols - 1, final_end_col);
 }

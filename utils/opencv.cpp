@@ -62,10 +62,10 @@ double average_mat_float(Mat m) {
     return sum / (m.rows * m.cols);
 }
 
-double average_submat_float(Mat m, int start_row, int end_row, int start_col, int end_col) {
+double average_submat(Mat m, int start_row, int end_row, int start_col, int end_col) {
     Mat submat;
     subimg(m, submat, start_row, end_row, start_col, end_col);
-    return average_mat_float(submat);
+    return average(submat);
 }
 
 double average(Mat m) {
