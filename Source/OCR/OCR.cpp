@@ -63,7 +63,10 @@ string OCR::run(Plaque *plaque) {
         plaque->chars.push_back(strCharacters[charValue]);
         plaque->charsPos.push_back(segments[i].pos);
     }
-    return plaque->str();
+
+    if(plaque->chars.size() > 0)
+        return plaque->str();
+    else return "Plaque non lisible !";
 }
 
 Mat OCR::hotFeatures(Mat in){
