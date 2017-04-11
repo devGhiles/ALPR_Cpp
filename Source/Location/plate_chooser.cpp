@@ -66,3 +66,48 @@ void choose_highest_average_brightness_in_v(vector<Mat> candidate_plates, Mat &c
 
     chosen_one = candidate_plates[chosen_index].clone();
 }
+
+void features_extraction(Mat plate, vector<double> &features, int n_cols, int n_rows) {
+    // variables
+    int W = plate.cols;
+    int H = plate.rows;
+    int w = (int) round(W / n_cols);
+    int h = (int) round(H / n_rows);
+
+    // convert to binary (OTSU)
+    Mat gray, binary;
+    cvtColor(plate, gray, CV_BGR2GRAY);
+    threshold(gray, binary, 100, 255, CV_THRESH_OTSU);
+
+    // the real thing
+    for (int p_row = 0; p_row < n_rows; p_row++) {
+        int start_row = p_row * h;
+        int end_row = min(start_row + w - 1, plate.rows - 1);
+        for (int p_col = 0; p_col < n_cols; p_col++) {
+            int start_col = p_col * w;
+            int end_col = min(start_col + h - 1, plate.cols - 1);
+
+            Mat cell;
+            subimg(binary, cell, start_row, end_row, start_col, end_col);
+            features.push_back(black_density(cell));
+        }
+    }
+}
+
+void features_extraction(Mat plate, vector<double> &features) {
+    int n_cols = 10;
+    int n_rows = 5;
+    features_extraction(plate, features, n_cols, n_rows);
+}
+
+double black_density(Mat binary_image) {
+    int count = 0;
+    for (int row = 0; row < binary_image.rows; row++) {
+        for (int col = 0; col < binary_image.cols; col++) {
+            if (binary_image.at<int>(row, col) == 0) {
+                count++;
+            }
+        }
+    }
+    return count / (binary_image.rows * binary_image.cols);
+}

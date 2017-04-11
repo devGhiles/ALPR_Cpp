@@ -7,6 +7,9 @@ using namespace std;
 using namespace cv;
 
 int main() {
+    main_svm_plates();
+    exit(0);
+
     string nomFichierOriginal;
     /*nomFichierOriginal = "medialab/3.jpg";//
     //nomFichierOriginal = "image_0032.jpg";//

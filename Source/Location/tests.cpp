@@ -23,3 +23,7 @@ void test_candidate_plates(vector<Mat> candidate_plates) {
         show(plate, "Candidate Plates Test");
     }
 }
+
+void main_svm_plates() {
+
+}
