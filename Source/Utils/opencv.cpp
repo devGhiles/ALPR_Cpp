@@ -4,6 +4,10 @@
 
 #include "opencv.h"
 
+void show(Mat img) {
+    show(img, "OpenCV");
+}
+
 void show(Mat img, string window_name) {
     imshow(window_name, img);
     waitKey(0);

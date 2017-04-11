@@ -10,6 +10,8 @@
 using namespace std;
 using namespace cv;
 
+void show(Mat img);
+
 void show(Mat img, string window_name);
 
 void show_dwt(Mat dwt_component, string window_name);
