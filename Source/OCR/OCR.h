@@ -9,6 +9,7 @@
 
 #include "../Models/Plaque.h"
 #include "../Models/CharSegment.h"
+#include "../ML/HOT.h"
 
 using namespace std;
 using namespace cv;
@@ -27,13 +28,14 @@ class OCR{
         Mat preTraiterSegment(Mat in);
 
         void train(Mat trainData, Mat trainClasses, int nlayers);
-        Mat hotFeatures(Mat input);
+
 
         bool DEBUG;
         bool segmentsSauvgarde;
         string nomFichierOriginal;
     private:
-
+    Mat hogFeatures(Mat in, HOGDescriptor hog);
+    Mat hotFeatures(Mat input, HOT hot);
 };
 
 #endif //OPENCV_TEST_OCR_H

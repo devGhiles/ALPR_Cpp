@@ -56,7 +56,9 @@ string OCR::run(Plaque *plaque) {
         Mat segment_threshold;
         threshold(segments[i].img, segment_threshold, 60, 255, CV_THRESH_BINARY);
 
-        const Mat& f = hotFeatures(segment_threshold);
+        const Mat& f = hotFeatures(segment_threshold, tarbia.hot);
+        //const Mat& f = hogFeatures(segment_threshold, tarbia.hog);
+
          // classification des chaque segment par ses caractéristiques "f"
         int charValue = tarbia.svm->predict(f);
 
@@ -69,13 +71,21 @@ string OCR::run(Plaque *plaque) {
     else return "Plaque non lisible !";
 }
 
-Mat OCR::hotFeatures(Mat in){
-    HOT hot;
-    hot.xWins=1;
-    hot.yWins=1;
-    hot.nbrBins=20;
+Mat OCR::hotFeatures(Mat in, HOT hot){
 
     vector<float> feat = hot.calculer(in);
+    Mat featMat(1, feat.size(), CV_32FC1);
+    // Conversion de du vecteur caractéristique en matrice
+    for(int i = 0;i<feat.size();i++){
+        featMat.at<float>(0,i) = feat[i];
+    }
+
+    return featMat;
+}
+
+Mat OCR::hogFeatures(Mat in, HOGDescriptor hog){
+    vector<float> feat;
+    hog.compute(in,feat);
     Mat featMat(1, feat.size(), CV_32FC1);
     // Conversion de du vecteur caractéristique en matrice
     for(int i = 0;i<feat.size();i++){

@@ -17,6 +17,23 @@ OCRTarbia::OCRTarbia() {}
 
 void OCRTarbia::run(){
     svm = SVM::create();
+    hot.xWins=1;
+    hot.yWins=1;
+    hot.nbrBins=20;
+
+    hog = HOGDescriptor (
+            Size(20,20), //winSize
+            Size(10,10), //blocksize
+            Size(5,5), //blockStride,
+            Size(10,10), //cellSize,
+            9, //nbins,
+            1, //derivAper,
+            -1, //winSigma,
+            0, //histogramNormType,
+            0.2, //L2HysThresh,
+            0,//gammal correction,
+            64,//nlevels=64
+            1);
 
     vector<Mat> trainCells;
     vector<Mat> testCells;
@@ -46,6 +63,7 @@ void OCRTarbia::run(){
 
     ConvertVectortoMatrix(trainHOT,testHOT,trainMat,testMat);
 
+    cout << "Converted to matrix: " << endl;
     Mat testResponse;
     SVMtrain(trainMat,trainLabels,testResponse,testMat, 43.5, 24.5);
 
@@ -82,25 +100,7 @@ void OCRTarbia::run(){
     cout << "Max accuracy : " << maxAccuracy;*/
 }
 
-HOGDescriptor hog(
-        Size(20,20), //winSize
-        Size(10,10), //blocksize
-        Size(5,5), //blockStride,
-        Size(10,10), //cellSize,
-        9, //nbins,
-        1, //derivAper,
-        -1, //winSigma,
-        0, //histogramNormType,
-        0.2, //L2HysThresh,
-        0,//gammal correction,
-        64,//nlevels=64
-        1);
-
 void OCRTarbia::CreateTrainTestHOT(vector<vector<float> > &trainHOT, vector<vector<float> > &testHOT, vector<Mat> &deskewedtrainCells, vector<Mat> &deskewedtestCells){
-    HOT hot;
-    hot.xWins=1;
-    hot.yWins=1;
-    hot.nbrBins=20;
     for(int y=0;y<deskewedtrainCells.size();y++){
         trainHOT.push_back(hot.calculer(deskewedtrainCells[y]));
         /*vector<float> descriptors;

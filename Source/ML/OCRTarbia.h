@@ -24,6 +24,8 @@ class OCRTarbia{
         void run();
 
         Ptr<SVM> svm;
+        HOT hot;
+        HOGDescriptor hog;
 
         string fichierTarbia;
         string dossierTarbia;
