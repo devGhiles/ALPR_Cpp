@@ -3,6 +3,7 @@
 //
 
 #include "tests.h"
+#include "location.h"
 
 void test_candidate_points(Mat src, vector<pair<int, int>> candidate_points) {
     for (pair<int, int> candidate : candidate_points) {
@@ -25,5 +26,11 @@ void test_candidate_plates(vector<Mat> candidate_plates) {
 }
 
 void main_svm_plates() {
-
+    string filename = "images/plates/slika_2.jpg";
+    Mat plate = imread(filename);
+    vector<double> features;
+    features_extraction(plate, features);
+    for (double f : features) {
+        cout << f << endl;
+    }
 }

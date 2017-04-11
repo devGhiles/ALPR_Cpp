@@ -109,5 +109,5 @@ double black_density(Mat binary_image) {
             }
         }
     }
-    return count / (binary_image.rows * binary_image.cols);
+    return ((double) count) / (binary_image.rows * binary_image.cols);
 }
