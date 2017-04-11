@@ -4,7 +4,6 @@
 
 #include "plate_chooser.h"
 #include "../Utils/opencv.h"
-#include "tests.h"
 #include "wavelet.h"
 
 void choose_plate(vector<Mat> candidate_plates, Mat &chosen_one) {

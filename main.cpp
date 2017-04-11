@@ -28,7 +28,7 @@ int main() {
     nomFichierOriginal = "2";
 
     // read and show the original image
-    cv::Mat plaqueImg = cv::imread("E:\\PFE\\ALPR_C++\\images\\slika\\" + nomFichierOriginal + ".jpg");
+    cv::Mat plaqueImg = cv::imread("images/slika/" + nomFichierOriginal + ".jpg");
 
     if (plaqueImg.empty()) {
         cout << "Erreur lors de l'ouverture de l'image" << endl;

@@ -34,7 +34,7 @@ string OCR::run(Plaque *plaque) {
 
     // Lancer la procédure d'apprentissage (Devra ce faire avec .load())
     OCRTarbia tarbia;
-    tarbia.fichierTarbia="../Assets/SVM/digits.png";
+    tarbia.fichierTarbia="Assets/SVM/digits.png";
     // Donnnées d'apprentissage par dossiers d'images
     tarbia.dossierTarbia = "../SVM/Data";
     tarbia.nbrClasses = 36;
