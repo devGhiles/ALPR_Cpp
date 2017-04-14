@@ -7,6 +7,7 @@
 
 #include <opencv2/opencv.hpp>
 #include "../Utils/opencv.h"
+#include "projections.h"
 
 using namespace std;
 using namespace cv;
@@ -24,5 +25,9 @@ void col_location(Mat v, int start_row, int end_row, int &start_col, int &end_co
 void row_location(Mat v, int &start_row, int &end_row, int start_col, int end_col);
 
 double get_window_brightness_threshold(Mat v, int start_row, int end_row, int start_col, int end_col);
+
+void col_location_by_projections(Mat src, int start_row, int end_row, int &start_col, int &end_col);
+
+void col_correction_by_projections(Mat &plate);
 
 #endif //ALPR_CPP_EXACT_LOCATION_H

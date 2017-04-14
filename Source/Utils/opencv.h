@@ -28,4 +28,6 @@ double average_submat(Mat m, int start_row, int end_row, int start_col, int end_
 
 double average(Mat m);
 
+float black_density(Mat binary_image);
+
 #endif //ALPR_CPP_OPENCV_H

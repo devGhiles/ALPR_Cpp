@@ -7,7 +7,7 @@ using namespace std;
 using namespace cv;
 
 int main() {
-    main_svm_plates();
+    main_svm();
     exit(0);
 
     string nomFichierOriginal;

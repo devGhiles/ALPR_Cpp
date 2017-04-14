@@ -5,6 +5,11 @@
 #include "location.h"
 
 void localize_license_plate(Mat src, Mat &dst) {
+    vector<Mat> candidate_plates;
+    localize_license_plate(src, dst, candidate_plates);
+}
+
+void localize_license_plate(Mat src, Mat &dst, vector<Mat> &candidate_plates) {
     // Declare variables and initialize parameters
     Mat gray, h, v;
     float brightness_threshold = 0.0f;
@@ -29,7 +34,6 @@ void localize_license_plate(Mat src, Mat &dst) {
     get_candidate_points(v, h, bs_prop, transitions_threshold, top_lines_to_check, p, candidate_points);
 
     // Candidate plates (from candidate points)
-    vector<Mat> candidate_plates;
     get_candidate_plates(src, v, candidate_points, candidate_plates);
 
     // Choose a plate between candidates

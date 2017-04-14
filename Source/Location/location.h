@@ -18,4 +18,6 @@ using namespace cv;
 
 void localize_license_plate(Mat src, Mat& dst);
 
+void localize_license_plate(Mat src, Mat &dst, vector<Mat> &candidate_plates);
+
 #endif //ALPR_CPP_LOCATION_H

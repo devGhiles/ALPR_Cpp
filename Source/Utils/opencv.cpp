@@ -75,3 +75,15 @@ double average_submat(Mat m, int start_row, int end_row, int start_col, int end_
 double average(Mat m) {
     return mean(m).val[0];
 }
+
+float black_density(Mat binary_image) {
+    int count = 0;
+    for (int row = 0; row < binary_image.rows; row++) {
+        for (int col = 0; col < binary_image.cols; col++) {
+            if (binary_image.at<int>(row, col) == 0) {
+                count++;
+            }
+        }
+    }
+    return ((float) count) / (binary_image.rows * binary_image.cols);
+}
