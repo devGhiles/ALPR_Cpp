@@ -10,7 +10,7 @@ void choose_plate(vector<Mat> candidate_plates, Mat &chosen_one) {
     if (candidate_plates.empty()) {
         chosen_one = Mat::zeros(80, 20, CV_8UC3);
     } else {
-        choose_lowest(candidate_plates, chosen_one);
+        choose_using_svm(candidate_plates, chosen_one);
     }
 }
 
@@ -65,4 +65,23 @@ void choose_highest_average_brightness_in_v(vector<Mat> candidate_plates, Mat &c
     }
 
     chosen_one = candidate_plates[chosen_index].clone();
+}
+
+void choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
+    Ptr<SVM> svm = Algorithm::load<ml::SVM>("svm_plates.yml");
+    float max_score = -2.0f;
+    for (Mat plate : candidate_plates) {
+        vector<float> features;
+        features_extraction(plate, features);
+        Mat featuresMat(1, (int) features.size(), CV_32FC1, &features[0]);
+        Mat responses;
+        float score = svm->predict(featuresMat, responses);
+        cout << responses << endl;
+        if (score > max_score) {
+            max_score = score;
+            chosen_one = plate.clone();
+            show(plate);
+            cout << "score: " << score << endl;
+        }
+    }
 }

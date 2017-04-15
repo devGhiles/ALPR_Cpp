@@ -7,7 +7,7 @@ using namespace std;
 using namespace cv;
 
 int main() {
-    main_svm();
+    main_location();
     exit(0);
 
     string nomFichierOriginal;

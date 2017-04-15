@@ -12,12 +12,12 @@ using namespace std;
 using namespace cv;
 using namespace cv::ml;
 
-void main_svm();
+void train_svm();
 
 void trainAndTest(Ptr<SVM> &svm);
 
-bool readFolderAndExtractFeatures(string folder, int label, int num_for_test, vector<float> &trainingData,
-                                  vector<int> &responsesData, vector<float> &testData,
+bool readFolderAndExtractFeatures(string folder, int label, int num_for_test, vector<vector<float>> &trainingData,
+                                  vector<int> &responsesData, vector<vector<float>> &testData,
                                   vector<float> &testResponsesData);
 
 void features_extraction(Mat plate, vector<float> &features, int n_cols, int n_rows);

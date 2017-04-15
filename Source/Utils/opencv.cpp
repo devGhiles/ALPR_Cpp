@@ -87,3 +87,19 @@ float black_density(Mat binary_image) {
     }
     return ((float) count) / (binary_image.rows * binary_image.cols);
 }
+
+void convert_vector_to_mat(vector<vector<float>> v, Mat &m) {
+    if (v.empty()) {
+        m = Mat();
+        return;
+    }
+
+    int rows = (int) v.size();
+    int cols = (int) v[0].size();
+    m = Mat(rows, cols, CV_32FC1);
+    for (int row = 0; row < rows; row++) {
+        for (int col = 0; col < cols; col++) {
+            m.at<float>(row, col) = v[row][col];
+        }
+    }
+}

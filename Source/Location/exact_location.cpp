@@ -5,7 +5,7 @@
 #include "exact_location.h"
 
 void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_points, vector<Mat> &candidate_plates) {
-    int height = 15, ratio = 10, window_width_prop = 3;
+    int height = 10, ratio = 10, window_width_prop = 3;
 
     for (pair<int, int> point : candidate_points) {
         int row = point.first;

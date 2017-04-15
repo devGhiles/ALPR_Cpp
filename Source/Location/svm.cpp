@@ -4,39 +4,40 @@
 
 #include "svm.h"
 
-void main_svm() {
+void train_svm() {
     Ptr<SVM> svm;
     trainAndTest(svm);
-    svm->save("plates.svm");
+    svm->save("svm_plates.yml");
 }
 
 void trainAndTest(Ptr<SVM> &svm) {
-    vector<float> trainingData;
+    vector<vector<float>> trainingData;
     vector<int> responsesData;
-    vector<float> testData;
+    vector<vector<float>> testData;
     vector<float> testResponsesData;
 
-    int num_for_test = 20;
+    int num_for_test = 200;  // on 810 samples
 
     // Get the non plate images
-    readFolderAndExtractFeatures("images/svm_plates/plates/%d.jpg", 0, num_for_test, trainingData, responsesData,
+    readFolderAndExtractFeatures("images/svm_plates/plates_all/%d.jpg", 1, num_for_test, trainingData, responsesData,
                                  testData, testResponsesData);
-    readFolderAndExtractFeatures("images/svm_plates/not_plates/%d.jpg", 1, num_for_test, trainingData, responsesData,
+    readFolderAndExtractFeatures("images/svm_plates/not_plates_all/%d.jpg", -1, num_for_test, trainingData,
+                                 responsesData,
                                  testData, testResponsesData);
-
-    // Some printing
-    cout << "Num of train samples: " << responsesData.size() << endl;
-    cout << "Num of test samples: " << testResponsesData.size() << endl;
 
     // Merge all data
-    Mat trainingDataMat((int) trainingData.size() / 2, 2, CV_32FC1, &trainingData[0]);
+    Mat trainingDataMat, testDataMat;
+    convert_vector_to_mat(trainingData, trainingDataMat);
     Mat responses((int) responsesData.size(), 1, CV_32SC1, &responsesData[0]);
-
-    Mat testDataMat((int) testData.size() / 2, 2, CV_32FC1, &testData[0]);
+    convert_vector_to_mat(testData, testDataMat);
     Mat testResponses((int) testResponsesData.size(), 1, CV_32FC1, &testResponsesData[0]);
+
     svm = SVM::create();
+    svm->setGamma(0.5);
+    svm->setC(10);
+    svm->setKernel(SVM::RBF);
+//    svm->setKernel(SVM::LINEAR);
     svm->setType(SVM::C_SVC);
-    svm->setKernel(SVM::CHI2);
     svm->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER, 100, 1e-6));
 
     svm->train(trainingDataMat, ROW_SAMPLE, responses);
@@ -55,8 +56,8 @@ void trainAndTest(Ptr<SVM> &svm) {
     }
 }
 
-bool readFolderAndExtractFeatures(string folder, int label, int num_for_test, vector<float> &trainingData,
-                                  vector<int> &responsesData, vector<float> &testData,
+bool readFolderAndExtractFeatures(string folder, int label, int num_for_test, vector<vector<float>> &trainingData,
+                                  vector<int> &responsesData, vector<vector<float>> &testData,
                                   vector<float> &testResponsesData) {
     VideoCapture images;
     if (!images.open(folder)) {
@@ -71,17 +72,14 @@ bool readFolderAndExtractFeatures(string folder, int label, int num_for_test, ve
         vector<float> features;
         features_extraction(frame, features);
 
-        for (int i = 0; i < features.size(); i++) {
-            if (img_index >= num_for_test) {
-                trainingData.push_back(features[i]);
-                trainingData.push_back(features[i]);
-                responsesData.push_back(label);
-            } else {
-                testData.push_back(features[i]);
-                testData.push_back(features[i]);
-                testResponsesData.push_back((float) label);
-            }
+        if (img_index >= num_for_test) {
+            trainingData.push_back(features);
+            responsesData.push_back(label);
+        } else {
+            testData.push_back(features);
+            testResponsesData.push_back(label);
         }
+
         img_index++;
     }
     return true;
@@ -115,7 +113,7 @@ void features_extraction(Mat plate, vector<float> &features, int n_cols, int n_r
 }
 
 void features_extraction(Mat plate, vector<float> &features) {
-    int n_cols = 10;
-    int n_rows = 5;
+    int n_cols = 16;
+    int n_rows = 4;
     features_extraction(plate, features, n_cols, n_rows);
 }

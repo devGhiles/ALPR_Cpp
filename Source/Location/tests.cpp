@@ -25,14 +25,10 @@ void test_candidate_plates(vector<Mat> candidate_plates) {
     }
 }
 
-void main_svm_plates() {
-    main_svm();
-}
-
 void svm_generate_plates_database() {
     int candidates_count = 0;
-    for (int i = 1; i <= 72; i++) {
-        Mat img = imread("images/slika/" + to_string(i) + ".jpg");
+    for (int i = 1; i <= 810; i++) {
+        Mat img = imread("images/G1/G1 (" + to_string(i) + ").jpg");
         Mat plate;
         vector<Mat> candidates;
         localize_license_plate(img, plate, candidates);
@@ -40,14 +36,26 @@ void svm_generate_plates_database() {
             candidates_count++;
             imwrite("images/candidates/" + to_string(candidates_count) + ".jpg", lp);
         }
+        if (candidates_count == 810) {
+            break;
+        }
     }
 }
 
 void main_location() {
-    Mat img = imread("images/G1/G1 (3).jpg");
+    Mat img = imread("images/G1/G1 (1).jpg");
     Mat plate;
     localize_license_plate(img, plate);
     show(plate);
-    col_correction_by_projections(plate);
-    show(plate);
+}
+
+void test_black_density() {
+    Mat plate = imread("images/plates/G1/1.jpg");
+    int n_cols = 16;
+    int n_rows = 4;
+    vector<float> features;
+    features_extraction(plate, features, n_cols, n_rows);
+    for (float f : features) {
+        cout << f << endl;
+    }
 }
