@@ -39,7 +39,8 @@ void trainAndTest(Ptr<SVM> &svm) {
     svm->setType(SVM::C_SVC);
     svm->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER, 100, 1e-6));
 
-    svm->train(trainingDataMat, ROW_SAMPLE, responses);
+//    svm->train(trainingDataMat, ROW_SAMPLE, responses);
+    svm->trainAuto(TrainData::create(trainingDataMat, ROW_SAMPLE, responses));
 
     if (testResponsesData.size() > 0) {
         cout << "Evaluation" << endl;
@@ -145,7 +146,12 @@ void v_features_extraction(Mat plate, vector<float> &features, int n_cols, int n
 }
 
 void v_features_extraction(Mat plate, vector<float> &features) {
-    int n_cols = 16;
-    int n_rows = 4;
+    int n_cols = 128;
+    int n_rows = 32;
     v_features_extraction(plate, features, n_cols, n_rows);
+}
+
+void hist_features_extraction(Mat plate, vector<float> &features) {
+    Mat hist;
+
 }

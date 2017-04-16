@@ -44,7 +44,7 @@ void svm_generate_plates_database() {
 }
 
 void main_location() {
-    Mat img = imread("images/G1/G1 (1).jpg");
+    Mat img = imread("images/G1/G1 (8).jpg");
     Mat plate;
     localize_license_plate(img, plate);
     show(plate);
