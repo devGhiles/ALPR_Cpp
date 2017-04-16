@@ -8,6 +8,8 @@
 #include <opencv2/opencv.hpp>
 #include "../Utils/opencv.h"
 #include "projections.h"
+#include "wavelet.h"
+#include "noise.h"
 
 using namespace std;
 using namespace cv;
@@ -29,5 +31,7 @@ double get_window_brightness_threshold(Mat v, int start_row, int end_row, int st
 void col_location_by_projections(Mat src, int start_row, int end_row, int &start_col, int &end_col);
 
 void col_correction_by_projections(Mat &plate);
+
+void row_correction_by_projections(Mat &plate);
 
 #endif //ALPR_CPP_EXACT_LOCATION_H

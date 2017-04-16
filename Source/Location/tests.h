@@ -23,4 +23,6 @@ void main_location();
 
 void test_black_density();
 
+void test_folder(string test_folder, string target_folder, int num_images);
+
 #endif //ALPR_CPP_TESTS_H

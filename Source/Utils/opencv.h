@@ -16,6 +16,10 @@ void show(Mat img, string window_name);
 
 void show_dwt(Mat dwt_component, string window_name);
 
+void show_binary(Mat img, string window_name);
+
+void show_binary(Mat img);
+
 void convert_to_grayscale(Mat src, Mat &dst);
 
 float average_of_positives(Mat &img);

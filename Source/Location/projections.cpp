@@ -24,9 +24,6 @@ void col_projections(Mat binary_image, vector<int> &projections) {
                 count++;
             }
         }
-        if (count < 20) {
-            count = 0;
-        }
         projections.push_back(count);
     }
 }

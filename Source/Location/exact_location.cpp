@@ -167,3 +167,29 @@ void col_correction_by_projections(Mat &plate) {
     subimg(plate, tmp_plate, 0, plate.rows - 1, start_col, end_col);
     plate = tmp_plate.clone();
 }
+
+void row_correction_by_projections(Mat &plate) {
+    // Convert to binary
+    Mat gray, binary;  // TODO: We assume white chars on black background, change this if needed
+    cvtColor(plate, gray, CV_BGR2GRAY);
+    threshold(gray, binary, 100, 255, CV_THRESH_OTSU);
+    vector<int> projections;
+    row_projections(binary, projections);
+
+    int start_row, end_row;
+    for (start_row = 0; start_row < projections.size(); start_row++) {
+        if (projections[start_row] != 0) {
+            break;
+        }
+    }
+    for (end_row = plate.rows - 1; end_row > start_row; end_row--) {
+        if (projections[end_row] != 0) {
+            break;
+        }
+    }
+    Mat tmp_plate;
+    subimg(plate, tmp_plate, start_row, end_row, 0, plate.cols - 1);
+    show(plate);
+    show(tmp_plate);
+    plate = tmp_plate.clone();
+}

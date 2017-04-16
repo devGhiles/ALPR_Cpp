@@ -7,6 +7,9 @@
 #include "wavelet.h"
 
 void choose_plate(vector<Mat> candidate_plates, Mat &chosen_one) {
+    if (!candidate_plates.empty()) {
+        filter_plates_by_ratio(candidate_plates);
+    }
     if (candidate_plates.empty()) {
         chosen_one = Mat::zeros(80, 20, CV_8UC3);
     } else {
@@ -75,13 +78,23 @@ void choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
         features_extraction(plate, features);
         Mat featuresMat(1, (int) features.size(), CV_32FC1, &features[0]);
         Mat responses;
-        float score = svm->predict(featuresMat, responses);
-        cout << responses << endl;
+        svm->predict(featuresMat, responses, StatModel::RAW_OUTPUT);
+        float score = responses.at<float>(0, 0);
         if (score > max_score) {
             max_score = score;
-            chosen_one = plate.clone();
-            show(plate);
-            cout << "score: " << score << endl;
+            chosen_one = plate;
         }
     }
+    chosen_one = chosen_one.clone();
+}
+
+void filter_plates_by_ratio(vector<Mat> &candidate_plates) {
+    int min_ratio = 3, max_ratio = 5;
+    vector<Mat> kept_plates;
+    for (Mat plate : candidate_plates) {
+        if ((plate.cols / plate.rows >= min_ratio) && (plate.cols / plate.rows <= max_ratio)) {
+            kept_plates.push_back(plate);
+        }
+    }
+    candidate_plates = kept_plates;
 }

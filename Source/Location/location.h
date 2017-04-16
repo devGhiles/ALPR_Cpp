@@ -12,6 +12,7 @@
 #include "exact_location.h"
 #include "plate_chooser.h"
 #include "tests.h"
+#include "correction.h"
 #include "../Utils/opencv.h"
 
 using namespace cv;

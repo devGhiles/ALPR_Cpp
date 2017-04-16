@@ -36,7 +36,6 @@ void trainAndTest(Ptr<SVM> &svm) {
     svm->setGamma(0.5);
     svm->setC(10);
     svm->setKernel(SVM::RBF);
-//    svm->setKernel(SVM::LINEAR);
     svm->setType(SVM::C_SVC);
     svm->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER, 100, 1e-6));
 
@@ -116,4 +115,37 @@ void features_extraction(Mat plate, vector<float> &features) {
     int n_cols = 16;
     int n_rows = 4;
     features_extraction(plate, features, n_cols, n_rows);
+}
+
+void v_features_extraction(Mat plate, vector<float> &features, int n_cols, int n_rows) {
+    // DWT transform to get v
+    Mat h_dwt, v_dwt, gray;
+    cvtColor(plate, gray, CV_BGR2GRAY);
+    dwt2(gray, h_dwt, v_dwt);
+
+    // variables
+    int W = v_dwt.cols;
+    int H = v_dwt.rows;
+    int w = (int) round(W / n_cols);
+    int h = (int) round(H / n_rows);
+
+    // the real thing
+    for (int p_row = 0; p_row < n_rows; p_row++) {
+        int start_row = p_row * h;
+        int end_row = min(start_row + w - 1, v_dwt.rows - 1);
+        for (int p_col = 0; p_col < n_cols; p_col++) {
+            int start_col = p_col * w;
+            int end_col = min(start_col + h - 1, v_dwt.cols - 1);
+
+            Mat cell;
+            subimg(v_dwt, cell, start_row, end_row, start_col, end_col);
+            features.push_back((float) mean(cell).val[0]);
+        }
+    }
+}
+
+void v_features_extraction(Mat plate, vector<float> &features) {
+    int n_cols = 16;
+    int n_rows = 4;
+    v_features_extraction(plate, features, n_cols, n_rows);
 }

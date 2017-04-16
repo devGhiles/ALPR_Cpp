@@ -7,7 +7,7 @@ using namespace std;
 using namespace cv;
 
 int main() {
-    main_location();
+    test_folder("images/G1/G1 (%d).jpg", "images/plates/tests/", 20);
     exit(0);
 
     string nomFichierOriginal;

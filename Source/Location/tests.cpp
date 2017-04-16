@@ -4,6 +4,7 @@
 
 #include "tests.h"
 #include "location.h"
+#include "wavelet.h"
 
 void test_candidate_points(Mat src, vector<pair<int, int>> candidate_points) {
     for (pair<int, int> candidate : candidate_points) {
@@ -57,5 +58,22 @@ void test_black_density() {
     features_extraction(plate, features, n_cols, n_rows);
     for (float f : features) {
         cout << f << endl;
+    }
+}
+
+void test_folder(string test_folder, string target_folder, int num_images) {
+    VideoCapture images;
+    if (!images.open(test_folder)) {
+        cout << "Can not open the folder images" << endl;
+        return;
+    }
+
+    Mat frame;
+    int img_index = 0;
+    while (images.read(frame) && (img_index < num_images)) {
+        img_index++;
+        Mat plate;
+        localize_license_plate(frame, plate);
+        imwrite(target_folder + to_string(img_index) + ".jpg", plate);
     }
 }

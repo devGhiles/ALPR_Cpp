@@ -20,6 +20,17 @@ void show_dwt(Mat dwt_component, string window_name) {
     waitKey(0);
 }
 
+void show_binary(Mat img, string window_name) {
+    Mat gray, binary;
+    cvtColor(img, gray, CV_BGR2GRAY);
+    threshold(gray, binary, 100, 255, THRESH_OTSU);
+    show(binary, window_name);
+}
+
+void show_binary(Mat img) {
+    show_binary(img, "OpenCV");
+}
+
 void convert_to_grayscale(Mat src, Mat &dst) {
     if (src.type() != CV_8UC1) {
         cvtColor(src, dst, CV_BGR2GRAY);
