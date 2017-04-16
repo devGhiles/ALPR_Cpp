@@ -70,7 +70,8 @@ bool readFolderAndExtractFeatures(string folder, int label, int num_for_test, ve
     while (images.read(frame)) {
         // Extract features
         vector<float> features;
-        features_extraction(frame, features);
+//        features_extraction(frame, features);
+        hist_features_extraction(frame, features);
 
         if (img_index >= num_for_test) {
             trainingData.push_back(features);
@@ -152,6 +153,15 @@ void v_features_extraction(Mat plate, vector<float> &features) {
 }
 
 void hist_features_extraction(Mat plate, vector<float> &features) {
-    Mat hist;
-
+    Mat hls;
+    cvtColor(plate, hls, CV_BGR2HLS);
+    for (int i = 0; i < 256; i++) {
+        features.push_back(0);
+    }
+    for (int row = 0; row < plate.rows; row++) {
+        for (int col = 0; col < plate.cols; col++) {
+            features[hls.at<Vec3b>(row, col)[0]]++;
+        }
+    }
+    features_extraction(plate, features);
 }

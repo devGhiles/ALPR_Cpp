@@ -7,8 +7,8 @@ using namespace std;
 using namespace cv;
 
 int main() {
-//    main_location();
-    test_folder("images/G1/G1 (%d).jpg", "images/plates/tests/", 20);
+//    train_svm();
+    test_folder("images/G1/G1 (%d).jpg", "images/plates/tests/", 50);
     exit(0);
 
     string nomFichierOriginal;

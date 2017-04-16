@@ -75,7 +75,7 @@ void choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
     float max_score = -2.0f;
     for (Mat plate : candidate_plates) {
         vector<float> features;
-        features_extraction(plate, features);
+        hist_features_extraction(plate, features);
         Mat featuresMat(1, (int) features.size(), CV_32FC1, &features[0]);
         Mat responses;
         svm->predict(featuresMat, responses, StatModel::RAW_OUTPUT);

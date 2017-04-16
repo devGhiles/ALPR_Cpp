@@ -29,4 +29,6 @@ void v_features_extraction(Mat plate, vector<float> &features, int n_cols, int n
 
 void v_features_extraction(Mat plate, vector<float> &features);
 
+void hist_features_extraction(Mat plate, vector<float> &features);
+
 #endif //ALPR_CPP_SVM_H
