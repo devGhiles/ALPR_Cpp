@@ -71,11 +71,11 @@ void choose_highest_average_brightness_in_v(vector<Mat> candidate_plates, Mat &c
 }
 
 void choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
-    Ptr<SVM> svm = Algorithm::load<ml::SVM>("svm_plates.yml");
     float max_score = -2.0f;
+    Ptr<SVM> svm = Algorithm::load<ml::SVM>("svm_plates.xml");
     for (Mat plate : candidate_plates) {
         vector<float> features;
-        hist_features_extraction(plate, features);
+        features_extraction(plate, features);
         Mat featuresMat(1, (int) features.size(), CV_32FC1, &features[0]);
         Mat responses;
         svm->predict(featuresMat, responses, StatModel::RAW_OUTPUT);
@@ -84,15 +84,18 @@ void choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
             max_score = score;
             chosen_one = plate;
         }
+//        cout << "score: " << score << endl;
+//        show(plate);
     }
     chosen_one = chosen_one.clone();
+    svm->clear();
 }
 
 void filter_plates_by_ratio(vector<Mat> &candidate_plates) {
     int min_ratio = 3, max_ratio = 5;
     vector<Mat> kept_plates;
     for (Mat plate : candidate_plates) {
-        if ((plate.cols / plate.rows >= min_ratio) && (plate.cols / plate.rows <= max_ratio)) {
+        if (((plate.cols / plate.rows) >= min_ratio) && ((plate.cols / plate.rows) <= max_ratio)) {
             kept_plates.push_back(plate);
         }
     }

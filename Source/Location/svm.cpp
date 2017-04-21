@@ -7,10 +7,43 @@
 void train_svm() {
     Ptr<SVM> svm;
     trainAndTest(svm);
-    svm->save("svm_plates.yml");
+    svm->save("svm_plates.xml");
 }
 
-void trainAndTest(Ptr<SVM> &svm) {
+void find_parameters() {
+    // Create the csv file
+    ofstream csv_file;
+    csv_file.open("svm_plates.csv");
+    csv_file << "c,gamma,error rate\n";
+
+    // the real thing
+    Ptr<SVM> svm;
+    float c_init = 0.5f;
+    float gamma_init = 0.1f;
+    float c_final = 50.0f;
+    float gamma_final = 20.0f;
+    float c_step = 0.5f;
+    float gamma_step = 0.1f;
+
+    for (float c = c_init; c <= c_final; c += c_step) {
+        for (float gamma = gamma_init; gamma <= gamma_final; gamma += gamma_step) {
+            float error_rate = trainAndTest(svm, c, gamma);
+            csv_file << to_string(c) + "," + to_string(gamma) + "," + to_string(error_rate) + "\n";
+        }
+        cout << 100.0f * (c - c_init + 1) / (c_final - c_init + 1) << "% done." << endl;
+    }
+
+    // Close the file
+    csv_file.close();
+}
+
+/* returns the error rate (in %) */
+float trainAndTest(Ptr<SVM> &svm) {
+    float c = 3.0f, gamma = 0.7f;
+    return trainAndTest(svm, c, gamma);
+}
+
+float trainAndTest(Ptr<SVM> &svm, float c, float gamma) {
     vector<vector<float>> trainingData;
     vector<int> responsesData;
     vector<vector<float>> testData;
@@ -33,8 +66,8 @@ void trainAndTest(Ptr<SVM> &svm) {
     Mat testResponses((int) testResponsesData.size(), 1, CV_32FC1, &testResponsesData[0]);
 
     svm = SVM::create();
-    svm->setGamma(0.5);
-    svm->setC(10);
+    svm->setGamma(gamma);
+    svm->setC(c);
     svm->setKernel(SVM::RBF);
     svm->setType(SVM::C_SVC);
     svm->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER, 100, 1e-6));
@@ -43,17 +76,18 @@ void trainAndTest(Ptr<SVM> &svm) {
     svm->trainAuto(TrainData::create(trainingDataMat, ROW_SAMPLE, responses));
 
     if (testResponsesData.size() > 0) {
-        cout << "Evaluation" << endl;
-        cout << "==========" << endl;
         // Test the ML Model
         Mat testPredict;
         svm->predict(testDataMat, testPredict);
-        cout << "Prediction Done" << endl;
+
         // Error calculation
         Mat errorMat = testPredict != testResponses;
         float error = 100.0f * countNonZero(errorMat) / testResponsesData.size();
-        cout << "Error: " << error << "%" << endl;
+        cout << "error rate: " << error << "%" << endl;
+        return error;
     }
+
+    return 100.0f;  // if no tests were made
 }
 
 bool readFolderAndExtractFeatures(string folder, int label, int num_for_test, vector<vector<float>> &trainingData,
@@ -70,8 +104,10 @@ bool readFolderAndExtractFeatures(string folder, int label, int num_for_test, ve
     while (images.read(frame)) {
         // Extract features
         vector<float> features;
-//        features_extraction(frame, features);
-        hist_features_extraction(frame, features);
+        features_extraction(frame, features);
+//        hist_features_extraction(frame, features);
+//        v_features_extraction(frame, features);
+//        hog_features_extraction(frame, features);
 
         if (img_index >= num_for_test) {
             trainingData.push_back(features);
@@ -114,8 +150,8 @@ void features_extraction(Mat plate, vector<float> &features, int n_cols, int n_r
 }
 
 void features_extraction(Mat plate, vector<float> &features) {
-    int n_cols = 16;
-    int n_rows = 4;
+    int n_cols = 25;
+    int n_rows = 3;
     features_extraction(plate, features, n_cols, n_rows);
 }
 
@@ -124,6 +160,7 @@ void v_features_extraction(Mat plate, vector<float> &features, int n_cols, int n
     Mat h_dwt, v_dwt, gray;
     cvtColor(plate, gray, CV_BGR2GRAY);
     dwt2(gray, h_dwt, v_dwt);
+    remove_noise_from_v(v_dwt, 0, 100);
 
     // variables
     int W = v_dwt.cols;
@@ -147,8 +184,8 @@ void v_features_extraction(Mat plate, vector<float> &features, int n_cols, int n
 }
 
 void v_features_extraction(Mat plate, vector<float> &features) {
-    int n_cols = 128;
-    int n_rows = 32;
+    int n_cols = 10;
+    int n_rows = 1;
     v_features_extraction(plate, features, n_cols, n_rows);
 }
 
@@ -163,5 +200,11 @@ void hist_features_extraction(Mat plate, vector<float> &features) {
             features[hls.at<Vec3b>(row, col)[0]]++;
         }
     }
-    features_extraction(plate, features);
+}
+
+void hog_features_extraction(Mat plate, vector<float> &features) {
+    Mat gray;
+    cvtColor(plate, gray, CV_BGR2GRAY);
+    HOGDescriptor hog;
+    hog.compute(gray, features);
 }

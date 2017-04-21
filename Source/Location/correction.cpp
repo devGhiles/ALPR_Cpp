@@ -32,8 +32,8 @@ void col_correction_by_projections_in_v(Mat &plate) {
 
     // start_col
     int start_col;
-    for (start_col = 0; start_col < v.cols; start_col++) {
-        if (projections[start_col] > stats::mean(projections, v.cols) * 0.9f) {
+    for (start_col = 0; start_col < v.cols - 1; start_col++) {
+        if (projections[start_col] > stats::mean(projections, v.cols) * 1.1f) {
             break;
         }
     }
@@ -42,7 +42,7 @@ void col_correction_by_projections_in_v(Mat &plate) {
     // end_col
     int end_col;
     for (end_col = v.cols - 1; end_col > start_col; end_col--) {
-        if (projections[end_col] > stats::mean(projections, v.cols) * 0.9f) {
+        if (projections[end_col] > stats::mean(projections, v.cols) * 1.1f) {
             break;
         }
     }
@@ -73,7 +73,7 @@ void row_correction_by_projections_in_v(Mat &plate) {
     // start_row
     int start_row;
     for (start_row = 0; start_row < v.rows; start_row++) {
-        if (projections[start_row] > stats::mean(projections, v.rows) * 0.1f) {
+        if (projections[start_row] > stats::mean(projections, v.rows) * 0.3f) {
             break;
         }
     }
@@ -82,7 +82,7 @@ void row_correction_by_projections_in_v(Mat &plate) {
     // end_row
     int end_row;
     for (end_row = v.rows - 1; end_row > start_row; end_row--) {
-        if (projections[end_row] > stats::mean(projections, v.rows) * 0.1f) {
+        if (projections[end_row] > stats::mean(projections, v.rows) * 0.3f) {
             break;
         }
     }
@@ -93,3 +93,58 @@ void row_correction_by_projections_in_v(Mat &plate) {
     end_row = min(2 * end_row, plate.rows - 1);
     subimg(plate, plate, start_row, end_row, 0, plate.cols - 1);
 }
+
+//void row_correction_by_projections_in_v(Mat &plate) {
+//    Mat binary, gray;
+//    cvtColor(plate, gray, CV_BGR2GRAY);
+//    threshold(gray, binary, 100, 255, THRESH_OTSU);
+//
+//    // rows projections
+//    int projections[binary.rows];
+//    for (int row = 0; row < binary.rows; row++) {
+//        projections[row] = 0;
+//        for (int col = 0; col < binary.cols; col++) {
+//            if (binary.at<int>(row, col) > 0) {
+//                projections[row]++;
+//            }
+//        }
+//    }
+//
+//    vector<int> starts, lengths;
+//    bool in_line = false;
+//    int current_length = 0, current_start = -1;
+//    for (int i = 0; i < binary.rows; i++) {
+//        if (projections[i] > 0) {
+//            if (in_line) {
+//                current_length++;
+//            } else {
+//                in_line = true;
+//                current_length = 1;
+//                current_start = i;
+//            }
+//        } else {
+//            if (in_line) {
+//                starts.push_back(current_start);
+//                lengths.push_back(current_length);
+//                current_length = 0;
+//                current_start = -1;
+//                in_line = false;
+//            }
+//        }
+//    }
+//
+//    int max_length = -1;
+//    int max_start = -1;
+//    for (int i = 0; i < lengths.size(); i++) {
+//        if (lengths[i] > max_length) {
+//            max_length = lengths[i];
+//            max_start = starts[i];
+//        }
+//    }
+//
+//    int start_row = max_start;
+//    int end_row = start_row + max_length - 1;
+//    start_row *= 2;
+//    end_row = min(2 * end_row, plate.rows - 1);
+//    subimg(plate, plate, start_row, end_row, 0, plate.cols - 1);
+//}

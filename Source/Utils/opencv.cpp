@@ -31,6 +31,17 @@ void show_binary(Mat img) {
     show_binary(img, "OpenCV");
 }
 
+void show_v(Mat img) {
+    show_v(img, "OpenCV");
+}
+
+void show_v(Mat img, string window_name) {
+    Mat gray, h, v;
+    convert_to_grayscale(img, gray);
+    dwt2(gray, h, v);
+    show_dwt(v, window_name);
+}
+
 void convert_to_grayscale(Mat src, Mat &dst) {
     if (src.type() != CV_8UC1) {
         cvtColor(src, dst, CV_BGR2GRAY);

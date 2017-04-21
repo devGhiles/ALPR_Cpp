@@ -9,7 +9,12 @@
 
 using namespace cv;
 
-void dwt2(Mat src, Mat& c, Mat& h, Mat& v, Mat& d);
-void dwt2(Mat src, Mat& h, Mat& v);
+void dwt2(Mat src, Mat &c, Mat &h, Mat &v, Mat &d);
+
+void dwt2(Mat src, Mat &h, Mat &v);
+
+void ewt2(Mat src, Mat &c, Mat &h, Mat &v, Mat &d);
+
+void ewt2(Mat src, Mat &h, Mat &v);
 
 #endif //ALPR_CPP_WAVELET_H

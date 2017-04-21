@@ -6,6 +6,7 @@
 #define ALPR_CPP_OPENCV_H
 
 #include <opencv2/opencv.hpp>
+#include "../Location/wavelet.h"
 
 using namespace std;
 using namespace cv;
@@ -19,6 +20,10 @@ void show_dwt(Mat dwt_component, string window_name);
 void show_binary(Mat img, string window_name);
 
 void show_binary(Mat img);
+
+void show_v(Mat img);
+
+void show_v(Mat img, string window_name);
 
 void convert_to_grayscale(Mat src, Mat &dst);
 
