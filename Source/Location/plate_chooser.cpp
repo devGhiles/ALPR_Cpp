@@ -86,13 +86,14 @@ void choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
         }
 //        cout << "score: " << score << endl;
 //        show(plate);
+//        show_v(plate);
     }
     chosen_one = chosen_one.clone();
     svm->clear();
 }
 
 void filter_plates_by_ratio(vector<Mat> &candidate_plates) {
-    int min_ratio = 3, max_ratio = 5;
+    int min_ratio = 3, max_ratio = 6;
     vector<Mat> kept_plates;
     for (Mat plate : candidate_plates) {
         if (((plate.cols / plate.rows) >= min_ratio) && ((plate.cols / plate.rows) <= max_ratio)) {

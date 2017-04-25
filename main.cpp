@@ -2,14 +2,31 @@
 
 #include "Source/OCR/OCR.h"
 #include "Source/Location/location.h"
+#include "Source/Segmentation/SegmentationByContours.h"
 
 using namespace std;
 using namespace cv;
 
 int main() {
+    Mat plate = imread("images/plates/tests/5.jpg");
+    convert_to_grayscale(plate, plate);
+    bitwise_not(plate, plate);
+    SegmentationByContours segByContours;
+    segByContours.DEBUG = true;
+    Plaque plaquette(plate, Rect(0, 0, 0, 0));
+    vector<CharSegment> segments = segByContours.segmenter(plaquette);
+    for (CharSegment segment : segments) {
+        show(segment.img);
+    }
+    exit(0);
+
+    OCR ocr1;
+    string result = ocr1.run(&plaquette);
+    cout << result << endl;
+    exit(0);
 //    train_svm();
     main_location();
-//    test_folder("images/G1/G1 (%d).jpg", "images/plates/tests/", 50);
+//    test_folder("images/G1/G1 (%d).jpg", "images/plates/tests/", 20);
 //    test_folder("images/slika/%d.jpg", "images/plates/tests/", 10);
     exit(0);
 
