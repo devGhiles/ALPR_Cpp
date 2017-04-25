@@ -12,15 +12,15 @@ using namespace std;
 using namespace cv;
 using namespace cv::ml;
 
-void choose_plate(vector<Mat> candidate_plates, Mat &chosen_one);
+int choose_plate(vector<Mat> candidate_plates, Mat &chosen_one);
 
 void choose_lowest(vector<Mat> candidate_plates, Mat &chosen_one);
 
 void choose_highest_average_brightness(vector<Mat> candidate_plates, Mat &chosen_one);
 
-void choose_highest_average_brightness_in_v(vector<Mat> candidate_plates, Mat &chosen_one);
+int choose_highest_average_brightness_in_v(vector<Mat> candidate_plates, Mat &chosen_one);
 
-void choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one);
+int choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one);
 
 void filter_plates_by_ratio(vector<Mat> &candidate_plates);
 

@@ -6,14 +6,16 @@
 #include "../Utils/opencv.h"
 #include "wavelet.h"
 
-void choose_plate(vector<Mat> candidate_plates, Mat &chosen_one) {
+/* returns the index in candidate_plates of the chosen plate */
+int choose_plate(vector<Mat> candidate_plates, Mat &chosen_one) {
     if (!candidate_plates.empty()) {
         filter_plates_by_ratio(candidate_plates);
     }
     if (candidate_plates.empty()) {
         chosen_one = Mat::zeros(80, 20, CV_8UC3);
+        return -1;
     } else {
-        choose_using_svm(candidate_plates, chosen_one);
+        return choose_using_svm(candidate_plates, chosen_one);
     }
 }
 
@@ -50,7 +52,7 @@ void choose_highest_average_brightness(vector<Mat> candidate_plates, Mat &chosen
     }
 }
 
-void choose_highest_average_brightness_in_v(vector<Mat> candidate_plates, Mat &chosen_one) {
+int choose_highest_average_brightness_in_v(vector<Mat> candidate_plates, Mat &chosen_one) {
     Mat h, v;
     double max_avg = -1.0;
     int chosen_index = -1;
@@ -68,12 +70,15 @@ void choose_highest_average_brightness_in_v(vector<Mat> candidate_plates, Mat &c
     }
 
     chosen_one = candidate_plates[chosen_index].clone();
+    return chosen_index;
 }
 
-void choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
+int choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
     float max_score = -2.0f;
+    int chosen_index = -1;
     Ptr<SVM> svm = Algorithm::load<ml::SVM>("svm_plates.xml");
-    for (Mat plate : candidate_plates) {
+    for (int i = 0; i < candidate_plates.size(); i++) {
+        Mat plate = candidate_plates[i];
         vector<float> features;
         features_extraction(plate, features);
         Mat featuresMat(1, (int) features.size(), CV_32FC1, &features[0]);
@@ -83,6 +88,7 @@ void choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
         if (score > max_score) {
             max_score = score;
             chosen_one = plate;
+            chosen_index = i;
         }
 //        cout << "score: " << score << endl;
 //        show(plate);
@@ -90,6 +96,7 @@ void choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
     }
     chosen_one = chosen_one.clone();
     svm->clear();
+    return chosen_index;
 }
 
 void filter_plates_by_ratio(vector<Mat> &candidate_plates) {

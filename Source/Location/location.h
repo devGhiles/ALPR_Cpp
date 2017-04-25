@@ -14,11 +14,14 @@
 #include "tests.h"
 #include "correction.h"
 #include "../Utils/opencv.h"
+#include "../Models/Plaque.h"
 
 using namespace cv;
 
 void localize_license_plate(Mat src, Mat& dst);
 
 void localize_license_plate(Mat src, Mat &dst, vector<Mat> &candidate_plates);
+
+void localize_license_plate(Mat src, Plaque &plaque);
 
 #endif //ALPR_CPP_LOCATION_H

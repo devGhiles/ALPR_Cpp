@@ -8,21 +8,13 @@ using namespace std;
 using namespace cv;
 
 int main() {
-    Mat plate = imread("images/plates/tests/5.jpg");
-    convert_to_grayscale(plate, plate);
-    bitwise_not(plate, plate);
-    SegmentationByContours segByContours;
-    segByContours.DEBUG = true;
-    Plaque plaquette(plate, Rect(0, 0, 0, 0));
-    vector<CharSegment> segments = segByContours.segmenter(plaquette);
-    for (CharSegment segment : segments) {
-        show(segment.img);
-    }
-    exit(0);
-
-    OCR ocr1;
-    string result = ocr1.run(&plaquette);
-    cout << result << endl;
+    Mat img = imread("images/slika/1.jpg");
+    Plaque plaque1;
+    localize_license_plate(img, plaque1);
+    rectangle(img, Point(plaque1.position.x - 2, plaque1.position.y - 2),
+              Point(plaque1.position.x + plaque1.position.width + 2, plaque1.position.y + plaque1.position.height + 2),
+              Scalar(0, 255, 0), 2);
+    show(img);
     exit(0);
 //    train_svm();
     main_location();
@@ -68,9 +60,9 @@ int main() {
 
     Mat plaque_gray;
     cvtColor(lp, plaque_gray, CV_BGR2GRAY);
-    blur(plaque_gray, plaque_gray, Size(3,3));
+    blur(plaque_gray, plaque_gray, Size(3, 3));
     equalizeHist(plaque_gray, plaque_gray);//plaque_gray=histeq(plaque_gray);
-    Plaque plaque(plaque_gray,Rect(0,0,0,0));
+    Plaque plaque(plaque_gray, Rect(0, 0, 0, 0));
 
     //imshow("Image d'origine", plaque.plateImg);
 
