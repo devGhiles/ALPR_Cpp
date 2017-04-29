@@ -15,7 +15,7 @@ void show(Mat img, string window_name) {
 
 void show_dwt(Mat dwt_component, string window_name) {
     Mat img;
-    dwt_component.convertTo(img, CV_8UC1);
+    normalize(dwt_component, img, 0, 255, NORM_MINMAX, CV_8UC1);
     imshow(window_name, img);
     waitKey(0);
 }

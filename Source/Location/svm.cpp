@@ -49,7 +49,7 @@ float trainAndTest(Ptr<SVM> &svm, float c, float gamma) {
     vector<vector<float>> testData;
     vector<float> testResponsesData;
 
-    int num_for_test = 270;  // on 810 samples
+    int num_for_test = 270;
 
     // Get the non plate images
     readFolderAndExtractFeatures("images/svm_plates/plates_all/%d.jpg", 1, num_for_test, trainingData, responsesData,
@@ -104,10 +104,10 @@ bool readFolderAndExtractFeatures(string folder, int label, int num_for_test, ve
     while (images.read(frame)) {
         // Extract features
         vector<float> features;
-        features_extraction(frame, features);
+//        features_extraction(frame, features);
 //        hist_features_extraction(frame, features);
 //        v_features_extraction(frame, features);
-//        hog_features_extraction(frame, features);
+        hog_features_extraction(frame, features);
 
         if (img_index >= num_for_test) {
             trainingData.push_back(features);
@@ -205,6 +205,19 @@ void hist_features_extraction(Mat plate, vector<float> &features) {
 void hog_features_extraction(Mat plate, vector<float> &features) {
     Mat gray;
     cvtColor(plate, gray, CV_BGR2GRAY);
-    HOGDescriptor hog;
+    resize(gray, gray, Size(108, 36));
+    HOGDescriptor hog(
+            Size(108,36), //winSize
+            Size(4,4), //blocksize
+            Size(4,4), //blockStride,
+            Size(2,2), //cellSize,
+            9, //nbins,
+            1, //derivAper,
+            -1, //winSigma,
+            0, //histogramNormType,
+            0.2, //L2HysThresh,
+            0,//gammal correction,
+            64,//nlevels=64
+            1);
     hog.compute(gray, features);
 }

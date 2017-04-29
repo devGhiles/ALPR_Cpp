@@ -80,7 +80,7 @@ int choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
     for (int i = 0; i < candidate_plates.size(); i++) {
         Mat plate = candidate_plates[i];
         vector<float> features;
-        features_extraction(plate, features);
+        hog_features_extraction(plate, features);
         Mat featuresMat(1, (int) features.size(), CV_32FC1, &features[0]);
         Mat responses;
         svm->predict(featuresMat, responses, StatModel::RAW_OUTPUT);

@@ -2,23 +2,14 @@
 
 #include "Source/OCR/OCR.h"
 #include "Source/Location/location.h"
-#include "Source/Segmentation/SegmentationByContours.h"
 
 using namespace std;
 using namespace cv;
 
 int main() {
-    Mat img = imread("images/slika/1.jpg");
-    Plaque plaque1;
-    localize_license_plate(img, plaque1);
-    rectangle(img, Point(plaque1.position.x - 2, plaque1.position.y - 2),
-              Point(plaque1.position.x + plaque1.position.width + 2, plaque1.position.y + plaque1.position.height + 2),
-              Scalar(0, 255, 0), 2);
-    show(img);
-    exit(0);
 //    train_svm();
-    main_location();
-//    test_folder("images/G1/G1 (%d).jpg", "images/plates/tests/", 20);
+//    main_location();
+    test_folder("images/G2/G2 (%d).jpg", "images/plates/tests/", 50);
 //    test_folder("images/slika/%d.jpg", "images/plates/tests/", 10);
     exit(0);
 
