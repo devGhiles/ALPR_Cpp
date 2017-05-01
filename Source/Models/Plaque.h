@@ -20,6 +20,7 @@ public:
     Plaque();
     Plaque(Mat img, Rect pos);
     string str();
+    Plaque clone();
 };
 
 #endif //OPENCV_TEST_PLAQUE_H

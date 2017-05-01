@@ -22,6 +22,22 @@ void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_point
     }
 }
 
+void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_points, vector<Plaque> &candidate_plates) {
+    int height = 10, ratio = 12, window_width_prop = 3;
+
+    for (pair<int, int> point : candidate_points) {
+        int row = point.first;
+        int col = point.second;
+        int start_row, end_row, start_col, end_col;
+
+        rough_location(src, row, col, height, ratio, start_row, end_row, start_col, end_col);
+        row_location(v, start_row, end_row, start_col, end_col);
+
+        // save the candidate plate
+        save_candidate_plate(src, candidate_plates, 2 * start_row, 2 * end_row, 2 * start_col, 2 * end_col);
+    }
+}
+
 void rough_location(Mat img, int row, int col, int height, int ratio, int &start_row, int &end_row, int &start_col,
                     int &end_col) {
     start_row = row;
@@ -42,6 +58,15 @@ save_candidate_plate(Mat src, vector<Mat> &candidate_plates, int start_row, int 
     Mat lp;
     subimg(src, lp, start_row, end_row, start_col, end_col);
     candidate_plates.push_back(lp);
+}
+
+void
+save_candidate_plate(Mat src, vector<Plaque> &candidate_plates, int start_row, int end_row, int start_col,
+                     int end_col) {
+    Plaque plaque;
+    subimg(src, plaque.plateImg, start_row, end_row, start_col, end_col);
+    plaque.position = Rect(start_col, start_row, plaque.plateImg.cols, plaque.plateImg.rows);
+    candidate_plates.push_back(plaque);
 }
 
 void col_location(Mat v, int start_row, int end_row, int &start_col, int &end_col, int window_width_prop) {

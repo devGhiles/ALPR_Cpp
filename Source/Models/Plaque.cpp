@@ -47,3 +47,8 @@ string Plaque::str(){
     }
     return result;
 }
+
+Plaque Plaque::clone() {
+    static Plaque other(plateImg.clone(), Rect(position.x, position.y, position.width, position.height));
+    return other;
+}

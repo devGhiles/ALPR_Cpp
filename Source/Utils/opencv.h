@@ -7,6 +7,7 @@
 
 #include <opencv2/opencv.hpp>
 #include "../Location/wavelet.h"
+#include "../Models/Plaque.h"
 
 using namespace std;
 using namespace cv;
@@ -14,6 +15,10 @@ using namespace cv;
 void show(Mat img);
 
 void show(Mat img, string window_name);
+
+void show(Plaque plaque);
+
+void show(Plaque plaque, string window_name);
 
 void show_dwt(Mat dwt_component, string window_name);
 

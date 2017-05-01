@@ -77,3 +77,29 @@ void test_folder(string test_folder, string target_folder, int num_images) {
         imwrite(target_folder + to_string(img_index) + ".jpg", plate);
     }
 }
+
+void test_location() {
+    int num_images = 810;
+
+    // for each image of the folder
+    for (int i = 1; i <= num_images; i++) {
+        // localize the plate
+        Plaque plaque;
+        Mat img = imread("images/G1/G1 (" + to_string(i) + ").jpg");
+        localize_license_plate(img, plaque);
+
+        // create plate mask
+        Mat mask = Mat::zeros(img.rows, img.cols, CV_8UC1);
+        for (int row = plaque.position.y; row < plaque.position.y + plaque.plateImg.rows; row++) {
+            for (int col = plaque.position.x; col < plaque.position.x + plaque.plateImg.cols; col++) {
+                mask.at<int>(row, col) = 255;
+            }
+        }
+
+        rectangle(img, Point(plaque.position.x, plaque.position.y),
+                  Point(plaque.position.x + plaque.position.width, plaque.position.y + plaque.position.height),
+                  Scalar(0, 255, 0));
+        show(img);
+        show(mask, "mask");
+    }
+}

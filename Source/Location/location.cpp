@@ -68,18 +68,12 @@ void localize_license_plate(Mat src, Plaque &plaque) {
     get_candidate_points(v, h, bs_prop, transitions_threshold, top_lines_to_check, p, candidate_points);
 
     // Candidate plates (from candidate points)
-    vector<Mat> candidate_plates;
+    vector<Plaque> candidate_plates;
     get_candidate_plates(src, v, candidate_points, candidate_plates);
 
     // Correct candidate plates
     correct_plates(candidate_plates);
 
     // Choose a plate between candidates
-    Mat chosen_plate;
-    int chosen_plate_index = choose_plate(candidate_plates, chosen_plate);
-
-    // return the plate
-    pair<int, int> chosen_point = candidate_points[chosen_plate_index];
-    plaque = Plaque(chosen_plate,
-                    Rect(2 * chosen_point.second, 2 * chosen_point.first, chosen_plate.cols, chosen_plate.rows));
+    choose_plate(candidate_plates, plaque);
 }
