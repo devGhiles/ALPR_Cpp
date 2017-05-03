@@ -104,7 +104,6 @@ int choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
         }
 //        cout << "score: " << score << endl;
 //        show(plate);
-//        show_v(plate);
     }
     chosen_one = chosen_one.clone();
     svm->clear();

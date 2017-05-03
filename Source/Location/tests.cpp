@@ -44,7 +44,7 @@ void svm_generate_plates_database() {
 }
 
 void main_location() {
-    Mat img = imread("images/G1/G1 (33).jpg");
+    Mat img = imread("images/G1/G1 (88).jpg");
     Mat plate;
     localize_license_plate(img, plate);
     show(plate);
@@ -79,7 +79,8 @@ void test_folder(string test_folder, string target_folder, int num_images) {
 }
 
 void test_location() {
-    int num_images = 810;
+    int num_images = 810, correctly_located_count = 0;
+    vector<int> wrong_location;
 
     // for each image of the folder
     for (int i = 1; i <= num_images; i++) {
@@ -90,16 +91,51 @@ void test_location() {
 
         // create plate mask
         Mat mask = Mat::zeros(img.rows, img.cols, CV_8UC1);
-        for (int row = plaque.position.y; row < plaque.position.y + plaque.plateImg.rows; row++) {
-            for (int col = plaque.position.x; col < plaque.position.x + plaque.plateImg.cols; col++) {
-                mask.at<int>(row, col) = 255;
+        for (int row = plaque.position.y; row < plaque.position.y + plaque.position.height; row++) {
+            for (int col = plaque.position.x; col < plaque.position.x + plaque.position.width; col++) {
+                mask.at<uchar>(row, col) = 255;
             }
         }
 
-        rectangle(img, Point(plaque.position.x, plaque.position.y),
-                  Point(plaque.position.x + plaque.position.width, plaque.position.y + plaque.position.height),
-                  Scalar(0, 255, 0));
-        show(img);
-        show(mask, "mask");
+        // read ground truth
+        Mat gt = imread("images/GT1/G1 (" + to_string(i) + ").jpg", IMREAD_GRAYSCALE);
+        threshold(gt, gt, 200, 255, THRESH_BINARY);
+
+        // intersection and union between detected plate and ground truth
+        Mat intersection, uni;
+        bitwise_and(mask, gt, intersection);
+        bitwise_or(mask, gt, uni);
+
+        // location ratio
+        int whites_in_intersection = 0, whites_in_uni = 0;
+        for (int row = 0; row < intersection.rows; row++) {
+            for (int col = 0; col < intersection.cols; col++) {
+                if (intersection.at<uchar>(row, col) > 0) {
+                    whites_in_intersection++;
+                }
+                if (uni.at<uchar>(row, col) > 0) {
+                    whites_in_uni++;
+                }
+            }
+        }
+        double ratio = ((double) whites_in_intersection / whites_in_uni);
+
+        // count the correct ones
+        if (ratio >= 0.5) {
+            correctly_located_count++;
+        } else {
+            wrong_location.push_back(i);
+        }
+
+        // display advancement
+        cout << (100.0 * i) / num_images << "%" << endl;
+    }
+    // display location rate
+    double rate = ((double) correctly_located_count) / num_images;
+    cout << "Correctly located: " << correctly_located_count << " / " << num_images << endl;
+    cout << "Location rate: " << rate * 100 << "%" << endl;
+    cout << "Wrong locations: " << endl;
+    for (int i : wrong_location) {
+        cout << i << endl;
     }
 }

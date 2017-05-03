@@ -28,6 +28,9 @@ void col_correction_by_projections_in_v(Mat &plate) {
     Mat h, v, gray;
     cvtColor(plate, gray, CV_BGR2GRAY);
     dwt2(gray, h, v);
+    if ((v.rows == 0) || (v.cols == 0)) {
+        return;
+    }
     remove_noise_from_v(v, 0, 100);
 
     // col projections
@@ -68,6 +71,9 @@ void col_correction_by_projections_in_v(Plaque &plate) {
     Mat h, v, gray;
     cvtColor(plate.plateImg, gray, CV_BGR2GRAY);
     dwt2(gray, h, v);
+    if ((v.rows == 0) || (v.cols == 0)) {
+        return;
+    }
     remove_noise_from_v(v, 0, 100);
 
     // col projections
@@ -110,6 +116,9 @@ void row_correction_by_projections_in_v(Mat &plate) {
     Mat h, v, gray;
     cvtColor(plate, gray, CV_BGR2GRAY);
     dwt2(gray, h, v);
+    if ((v.rows == 0) || (v.cols == 0)) {
+        return;
+    }
     remove_noise_from_v(v, 0, 100);
 
     // rows projections
@@ -150,6 +159,9 @@ void row_correction_by_projections_in_v(Plaque &plaque) {
     Mat h, v, gray;
     cvtColor(plaque.plateImg, gray, CV_BGR2GRAY);
     dwt2(gray, h, v);
+    if ((v.rows == 0) || (v.cols == 0)) {
+        return;
+    }
     remove_noise_from_v(v, 0, 100);
 
     // rows projections

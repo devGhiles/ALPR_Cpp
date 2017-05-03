@@ -25,7 +25,9 @@ void get_candidate_points(Mat v, Mat h, int bs_prop, int transitions_threshold, 
 
         // If there are enough transactions, check if there is a horizontal line on the LH sub-band
         if (max_transitions >= transitions_threshold) {
+            tmp_candidate_points.insert(pair<int, int>(row, col_max));
             for (int top_row = row - top_lines_to_check; top_row < row; top_row++) {
+                break;  // we don't check for the horizontal line, and it works!
                 int end_col_max = min(col_max + bs, v.cols);
                 int line_max = max_contiguous(h.row(top_row).colRange(col_max, end_col_max));
 
