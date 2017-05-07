@@ -20,6 +20,8 @@ void show(Plaque plaque);
 
 void show(Plaque plaque, string window_name);
 
+void show_dwt(Mat dwt_component);
+
 void show_dwt(Mat dwt_component, string window_name);
 
 void show_binary(Mat img, string window_name);

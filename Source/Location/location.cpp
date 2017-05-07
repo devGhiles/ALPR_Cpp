@@ -17,7 +17,7 @@ void localize_license_plate(Mat src, Mat &dst, vector<Mat> &candidate_plates) {
     int bs_prop = 5;
     int transitions_threshold = 8;
     int top_lines_to_check = 10;
-    double p = 0.2;
+    double p = 0.3;
 
     // convert the image to grayscale
     convert_to_grayscale(src, gray);

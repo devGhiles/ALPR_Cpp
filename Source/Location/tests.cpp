@@ -16,13 +16,13 @@ void test_candidate_points(Mat src, vector<pair<int, int>> candidate_points) {
         int end_col = start_col + width - 1;
         Mat src_copy = src.clone();
         rectangle(src_copy, Point(start_col, start_row), Point(end_col, end_row), Scalar(0, 255, 0));
-        show(src_copy, "Candidate Points Test");
+        show(src_copy);
     }
 }
 
 void test_candidate_plates(vector<Mat> candidate_plates) {
     for (Mat plate : candidate_plates) {
-        show(plate, "Candidate Plates Test");
+        show(plate);
     }
 }
 
@@ -44,7 +44,7 @@ void svm_generate_plates_database() {
 }
 
 void main_location() {
-    Mat img = imread("images/G1/G1 (88).jpg");
+    Mat img = imread("images/G4/G4 (1).jpg");
     Mat plate;
     localize_license_plate(img, plate);
     show(plate);
@@ -79,14 +79,15 @@ void test_folder(string test_folder, string target_folder, int num_images) {
 }
 
 void test_location() {
-    int num_images = 810, correctly_located_count = 0;
+    // G1: 810, G2: 700, G3: 743, G4: 572
+    int num_images = 572, correctly_located_count = 0;
     vector<int> wrong_location;
 
     // for each image of the folder
     for (int i = 1; i <= num_images; i++) {
         // localize the plate
         Plaque plaque;
-        Mat img = imread("images/G1/G1 (" + to_string(i) + ").jpg");
+        Mat img = imread("images/G4/G4 (" + to_string(i) + ").jpg");
         localize_license_plate(img, plaque);
 
         // create plate mask
@@ -98,7 +99,7 @@ void test_location() {
         }
 
         // read ground truth
-        Mat gt = imread("images/GT1/G1 (" + to_string(i) + ").jpg", IMREAD_GRAYSCALE);
+        Mat gt = imread("images/GT4/G4 (" + to_string(i) + ").jpg", IMREAD_GRAYSCALE);
         threshold(gt, gt, 200, 255, THRESH_BINARY);
 
         // intersection and union between detected plate and ground truth
@@ -128,7 +129,7 @@ void test_location() {
         }
 
         // display advancement
-        cout << (100.0 * i) / num_images << "%" << endl;
+        cout << i << "/" << num_images << " (" << (100.0 * i) / num_images << "%)" << endl;
     }
     // display location rate
     double rate = ((double) correctly_located_count) / num_images;

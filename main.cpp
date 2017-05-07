@@ -7,9 +7,10 @@ using namespace std;
 using namespace cv;
 
 int main() {
-    main_location();
-//    test_folder("images/G2/G2 (%d).jpg", "images/plates/tests2/", 300);
-//    test_folder("images/slika/%d.jpg", "images/plates/tests/", 10);
+    test_location();
+//    test_folder("images/G4/G4 (%d).jpg", "images/plates/tests/", 20);
+//    test_folder("images/slika/%d.jpg", "images/plates/tests/", 20);
+//    test_folder("images/medialab/%d.jpg", "images/plates/tests/", 20);
 //    test_folder("images/caltech/%d.jpg", "images/plates/tests/", 20);
     exit(0);
 

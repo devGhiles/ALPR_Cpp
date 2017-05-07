@@ -10,8 +10,12 @@
 using namespace std;
 using namespace cv;
 
-void row_projections(Mat binary_image, vector<int> &projections);
+void row_projections(Mat img, vector<int> &projections);
 
-void col_projections(Mat binary_image, vector<int> &projections);
+void row_projections(Mat img, vector<float> &projections);
+
+void col_projections(Mat img, vector<int> &projections);
+
+void col_projections(Mat img, vector<float> &projections);
 
 #endif //ALPR_CPP_PROJECTIONS_H

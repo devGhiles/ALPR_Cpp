@@ -8,6 +8,7 @@
 #include <opencv2/opencv.hpp>
 #include "../Utils/opencv.h"
 #include "svm.h"
+#include "projections.h"
 
 using namespace std;
 using namespace cv;

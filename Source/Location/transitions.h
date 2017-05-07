@@ -7,6 +7,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <set>
+#include "../Utils/opencv.h"
 
 using namespace std;
 using namespace cv;

@@ -21,6 +21,10 @@ void show(Plaque plaque, string window_name) {
     show(plaque.plateImg, window_name);
 }
 
+void show_dwt(Mat dwt_component) {
+    show_dwt(dwt_component, "OpenCV");
+}
+
 void show_dwt(Mat dwt_component, string window_name) {
     Mat img;
     normalize(dwt_component, img, 0, 255, NORM_MINMAX, CV_8UC1);

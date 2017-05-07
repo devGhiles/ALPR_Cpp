@@ -16,24 +16,51 @@ void get_candidate_points(Mat v, Mat h, int bs_prop, int transitions_threshold, 
             if (v.at<float>(row, col) > 0) {
                 int end_col = min(col + bs, v.cols);
                 int current_transitions = transitions_count(v.row(row).colRange(col, end_col));
-                if (current_transitions > max_transitions) {
-                    max_transitions = current_transitions;
+                if (current_transitions >= 0.9 * max_transitions) {
+                    max_transitions = max(current_transitions, max_transitions);
                     col_max = col;
+
+                    // show the transitions
+                    // TODO: delete the code below
+//                    Mat v_copy;
+//                    normalize(v, v_copy, 0, 255, NORM_MINMAX, CV_8UC1);
+//                    cvtColor(v_copy, v_copy, COLOR_GRAY2BGR);
+//                    rectangle(v_copy, Point(col - 1, row - 1), Point(end_col + 1, row + 1), Scalar(0, 255, 0));
+//                    putText(v_copy, to_string(current_transitions), Point(end_col - 50, row - 2), FONT_HERSHEY_PLAIN, 1.0,
+//                            Scalar(0, 255, 0));
+//                    show(v_copy);
                 }
             }
         }
 
         // If there are enough transactions, check if there is a horizontal line on the LH sub-band
         if (max_transitions >= transitions_threshold) {
-            tmp_candidate_points.insert(pair<int, int>(row, col_max));
+            bool top_line_found = false;
+
+            // check top lines
             for (int top_row = row - top_lines_to_check; top_row < row; top_row++) {
-                break;  // we don't check for the horizontal line, and it works!
                 int end_col_max = min(col_max + bs, v.cols);
                 int line_max = max_contiguous(h.row(top_row).colRange(col_max, end_col_max));
 
                 if (line_max >= p * bs) {
+                    top_line_found = true;
                     tmp_candidate_points.insert(pair<int, int>(top_row, col_max));
                     break;
+                }
+            }
+
+            // check bottom lines
+            if (!top_line_found) {
+                int bottom_lines_to_check = 10;
+                int end_row = min(row + bottom_lines_to_check - 1, h.rows - 1);
+                for (int bottom_row = row; bottom_row <= end_row; bottom_row++) {
+                    int end_col_max = min(col_max + bs, v.cols);
+                    int line_max = max_contiguous(h.row(bottom_row).colRange(col_max, end_col_max));
+
+                    if (line_max >= p * bs) {
+                        tmp_candidate_points.insert(pair<int, int>(row, col_max));
+                        break;
+                    }
                 }
             }
         }
