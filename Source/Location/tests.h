@@ -33,4 +33,6 @@ void test_recognition();
 
 void read_plate_numbers(string filename, vector<string> &numbers);
 
+void test_system();
+
 #endif //ALPR_CPP_TESTS_H

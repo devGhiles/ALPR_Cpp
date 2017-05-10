@@ -175,3 +175,26 @@ void read_plate_numbers(string filename, vector<string> &numbers) {
         f.close();
     }
 }
+
+void test_system() {
+    int num_images = 26;
+    string folder = "images/medialab/difficult_shadows/";  // images folder
+
+    vector<string> numbers;
+    read_plate_numbers(folder + "numbers.txt", numbers);
+
+    OCR ocr;
+    int correct_recognitions_count = 0;
+    for (int i = 1; i <= num_images; i++) {
+        Mat img = imread(folder + to_string(i));
+        Plaque plaque;
+        localize_license_plate(img, plaque);
+        convert_to_grayscale(plaque.plateImg, plaque.plateImg);
+        if (ocr.run(&plaque) == numbers[i - 1]) {
+            correct_recognitions_count++;
+        }
+        cout << i << "/" << num_images << " (" << 100.0f * (((float) i) / num_images) << "%)" << endl;
+    }
+
+    cout << "Success rate: " << 100.0f * (((float) correct_recognitions_count) / num_images);
+}

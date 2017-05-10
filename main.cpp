@@ -7,7 +7,7 @@ using namespace std;
 using namespace cv;
 
 int main() {
-    test_recognition();
+    test_system();
 //    test_folder("images/G4/G4 (%d).jpg", "images/plates/tests/", 20);
 //    test_folder("images/medialab/day_color_small_sample//%d.jpg", "images/plates/tests/", 20);
 //    test_folder("images/slika/%d.jpg", "images/plates/tests/", 20);
