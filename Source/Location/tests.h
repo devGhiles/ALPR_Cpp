@@ -9,6 +9,7 @@
 #include "../Utils/opencv.h"
 #include "svm.h"
 #include "projections.h"
+#include "../OCR/OCR.h"
 
 using namespace std;
 using namespace cv;
@@ -27,5 +28,9 @@ void test_black_density();
 void test_folder(string test_folder, string target_folder, int num_images);
 
 void test_location();
+
+void test_recognition();
+
+void read_plate_numbers(string filename, vector<string> &numbers);
 
 #endif //ALPR_CPP_TESTS_H

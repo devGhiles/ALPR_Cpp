@@ -7,11 +7,10 @@ using namespace std;
 using namespace cv;
 
 int main() {
-    test_location();
+    test_recognition();
 //    test_folder("images/G4/G4 (%d).jpg", "images/plates/tests/", 20);
+//    test_folder("images/medialab/day_color_small_sample//%d.jpg", "images/plates/tests/", 20);
 //    test_folder("images/slika/%d.jpg", "images/plates/tests/", 20);
-//    test_folder("images/medialab/%d.jpg", "images/plates/tests/", 20);
-//    test_folder("images/caltech/%d.jpg", "images/plates/tests/", 20);
     exit(0);
 
     string nomFichierOriginal;

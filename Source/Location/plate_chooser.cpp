@@ -12,7 +12,7 @@ int choose_plate(vector<Mat> candidate_plates, Mat &chosen_one) {
         filter_plates_by_ratio(candidate_plates);
     }
     if (candidate_plates.empty()) {
-        chosen_one = Mat::zeros(80, 20, CV_8UC3);
+        chosen_one = Mat::zeros(20, 80, CV_8UC3);
         return -1;
     } else {
         return choose_using_svm(candidate_plates, chosen_one);

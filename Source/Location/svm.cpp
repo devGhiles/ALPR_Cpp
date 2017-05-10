@@ -49,12 +49,12 @@ float trainAndTest(Ptr<SVM> &svm, float c, float gamma) {
     vector<vector<float>> testData;
     vector<float> testResponsesData;
 
-    int num_for_test = 270;
+    int num_for_test = 38;
 
     // Get the non plate images
-    readFolderAndExtractFeatures("images/svm_plates/plates_all/%d.jpg", 1, num_for_test, trainingData, responsesData,
+    readFolderAndExtractFeatures("images/svm_plates/plates/%d.jpg", 1, num_for_test, trainingData, responsesData,
                                  testData, testResponsesData);
-    readFolderAndExtractFeatures("images/svm_plates/not_plates_all/%d.jpg", -1, num_for_test, trainingData,
+    readFolderAndExtractFeatures("images/svm_plates/not_plates/%d.jpg", -1, num_for_test, trainingData,
                                  responsesData,
                                  testData, testResponsesData);
 

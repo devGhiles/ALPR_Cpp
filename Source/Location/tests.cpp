@@ -44,7 +44,7 @@ void svm_generate_plates_database() {
 }
 
 void main_location() {
-    Mat img = imread("images/G4/G4 (1).jpg");
+    Mat img = imread("images/G1/G1 (1).jpg");
     Mat plate;
     localize_license_plate(img, plate);
     show(plate);
@@ -138,5 +138,40 @@ void test_location() {
     cout << "Wrong locations: " << endl;
     for (int i : wrong_location) {
         cout << i << endl;
+    }
+}
+
+void test_recognition() {
+    int num_images = 26;
+    string folder = "images/medialab/plates/difficult_shadows/"; // plates folder
+
+    vector<string> numbers;
+    read_plate_numbers(folder + "numbers.txt", numbers);
+
+    OCR ocr;
+    int correct_recognitions_count = 0;
+    for (int i = 1; i <= num_images; i++) {
+        Plaque plaque;
+        plaque.plateImg = imread(folder + to_string(i) + ".jpg");
+        convert_to_grayscale(plaque.plateImg, plaque.plateImg);
+        if (ocr.run(&plaque) == numbers[i - 1]) {
+            correct_recognitions_count++;
+        }
+        cout << i << "/" << num_images << " (" << 100.0f * (((float) i) / num_images) << "%)" << endl;
+    }
+
+    cout << "Recognition rate: " << 100.0f * (((float) correct_recognitions_count) / num_images);
+}
+
+// reads a file numbers.txt to the given vector
+void read_plate_numbers(string filename, vector<string> &numbers) {
+    ifstream f;
+    f.open(filename);
+    if (f.is_open()) {
+        string number;
+        while (getline(f, number)) {
+            numbers.push_back(number);
+        }
+        f.close();
     }
 }
