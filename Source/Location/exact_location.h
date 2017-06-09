@@ -17,9 +17,16 @@ using namespace cv;
 
 void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_points, vector<Mat> &candidate_plates);
 
+void
+get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_points, vector<Mat> &candidate_plates, int width,
+                     int height);
+
 void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_points, vector<Plaque> &candidate_plates);
 
-void rough_location(Mat img, int row, int col, int height, int ratio, int &start_row, int &end_row, int &start_col,
+void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_points, vector<Plaque> &candidate_plates,
+                          int width, int height);
+
+void rough_location(Mat img, int row, int col, int width, int height, int &start_row, int &end_row, int &start_col,
                     int &end_col);
 
 void

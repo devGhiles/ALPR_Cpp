@@ -13,15 +13,15 @@ void train_svm() {
 void find_parameters() {
     // Create the csv file
     ofstream csv_file;
-    csv_file.open("svm_plates.csv");
+    csv_file.open("svm_plates2.csv");
     csv_file << "c,gamma,error rate\n";
 
     // the real thing
     Ptr<SVM> svm;
-    float c_init = 0.5f;
-    float gamma_init = 0.1f;
-    float c_final = 50.0f;
-    float gamma_final = 20.0f;
+    float c_init = 4.5f;  // 0.5f
+    float gamma_init = 2.2f;  // 0.1f
+    float c_final = 20.0f;  // 20.0f
+    float gamma_final = 2.2f;  // 5.0f
     float c_step = 0.5f;
     float gamma_step = 0.1f;
 
@@ -29,6 +29,7 @@ void find_parameters() {
         for (float gamma = gamma_init; gamma <= gamma_final; gamma += gamma_step) {
             float error_rate = trainAndTest(svm, c, gamma);
             csv_file << to_string(c) + "," + to_string(gamma) + "," + to_string(error_rate) + "\n";
+            csv_file.flush();
         }
         cout << 100.0f * (c - c_init + 1) / (c_final - c_init + 1) << "% done." << endl;
     }
@@ -39,7 +40,7 @@ void find_parameters() {
 
 /* returns the error rate (in %) */
 float trainAndTest(Ptr<SVM> &svm) {
-    float c = 3.0f, gamma = 0.7f;
+    float c = 5.0f, gamma = 2.2f;
     return trainAndTest(svm, c, gamma);
 }
 
@@ -49,7 +50,7 @@ float trainAndTest(Ptr<SVM> &svm, float c, float gamma) {
     vector<vector<float>> testData;
     vector<float> testResponsesData;
 
-    int num_for_test = 38;
+    int num_for_test = 847;
 
     // Get the non plate images
     readFolderAndExtractFeatures("images/svm_plates/plates/%d.jpg", 1, num_for_test, trainingData, responsesData,
@@ -216,8 +217,8 @@ void hog_features_extraction(Mat plate, vector<float> &features) {
             -1, //winSigma,
             0, //histogramNormType,
             0.2, //L2HysThresh,
-            0,//gammal correction,
-            64,//nlevels=64
+            0, //gammal correction,
+            64, //nlevels=64
             1);
     hog.compute(gray, features);
 }

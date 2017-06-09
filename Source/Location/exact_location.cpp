@@ -5,17 +5,20 @@
 #include "exact_location.h"
 
 void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_points, vector<Mat> &candidate_plates) {
-    int height = 10, ratio = 12, window_width_prop = 3;
+    int height = 10, width = 120;
+    get_candidate_plates(src, v, candidate_points, candidate_plates, width, height);
+}
 
+void
+get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_points, vector<Mat> &candidate_plates, int width,
+                     int height) {
     for (pair<int, int> point : candidate_points) {
         int row = point.first;
         int col = point.second;
         int start_row, end_row, start_col, end_col;
 
-        rough_location(src, row, col, height, ratio, start_row, end_row, start_col, end_col);
-//        col_location(v, start_row, end_row, start_col, end_col, window_width_prop);
+        rough_location(src, row, col, width, height, start_row, end_row, start_col, end_col);
         row_location(v, start_row, end_row, start_col, end_col);
-//        col_location_by_projections(src, start_row, end_row, start_col, end_col);
 
         // save the candidate plate
         save_candidate_plate(src, candidate_plates, 2 * start_row, 2 * end_row, 2 * start_col, 2 * end_col);
@@ -23,14 +26,18 @@ void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_point
 }
 
 void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_points, vector<Plaque> &candidate_plates) {
-    int height = 10, ratio = 12, window_width_prop = 3;
+    int height = 10, width = 120;
+    get_candidate_plates(src, v, candidate_points, candidate_plates, width, height);
+}
 
+void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_points, vector<Plaque> &candidate_plates,
+                          int width, int height) {
     for (pair<int, int> point : candidate_points) {
         int row = point.first;
         int col = point.second;
         int start_row, end_row, start_col, end_col;
 
-        rough_location(src, row, col, height, ratio, start_row, end_row, start_col, end_col);
+        rough_location(src, row, col, width, height, start_row, end_row, start_col, end_col);
         row_location(v, start_row, end_row, start_col, end_col);
 
         // save the candidate plate
@@ -38,7 +45,7 @@ void get_candidate_plates(Mat src, Mat v, vector<pair<int, int>> candidate_point
     }
 }
 
-void rough_location(Mat img, int row, int col, int height, int ratio, int &start_row, int &end_row, int &start_col,
+void rough_location(Mat img, int row, int col, int width, int height, int &start_row, int &end_row, int &start_col,
                     int &end_col) {
     start_row = row;
     end_row = row + height - 1;
@@ -47,7 +54,7 @@ void rough_location(Mat img, int row, int col, int height, int ratio, int &start
     }
 
     start_col = col;
-    end_col = start_col + ((end_row - start_row) * ratio);
+    end_col = col + width - 1;
     if (end_col >= (img.cols - 1) / 2) {
         end_col = ((img.cols - 1) / 2) - 1;
     }

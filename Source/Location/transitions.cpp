@@ -37,15 +37,20 @@ void get_candidate_points(Mat v, Mat h, int bs_prop, int transitions_threshold, 
         if (max_transitions >= transitions_threshold) {
             bool top_line_found = false;
 
-            // check top lines
-            for (int top_row = row - top_lines_to_check; top_row < row; top_row++) {
-                int end_col_max = min(col_max + bs, v.cols);
-                int line_max = max_contiguous(h.row(top_row).colRange(col_max, end_col_max));
+            if (p == 0.0) {
+                top_line_found = true;
+                tmp_candidate_points.insert(pair<int, int>(row, col_max));
+            } else {
+                // check top lines
+                for (int top_row = row - top_lines_to_check; top_row < row; top_row++) {
+                    int end_col_max = min(col_max + bs, v.cols);
+                    int line_max = max_contiguous(h.row(top_row).colRange(col_max, end_col_max));
 
-                if (line_max >= p * bs) {
-                    top_line_found = true;
-                    tmp_candidate_points.insert(pair<int, int>(top_row, col_max));
-                    break;
+                    if (line_max >= p * bs) {
+                        top_line_found = true;
+                        tmp_candidate_points.insert(pair<int, int>(top_row, col_max));
+                        break;
+                    }
                 }
             }
 

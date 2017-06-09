@@ -6,6 +6,7 @@
 #define ALPR_CPP_TESTS_H
 
 #include <opencv2/opencv.hpp>
+#include <time.h>
 #include "../Utils/opencv.h"
 #include "svm.h"
 #include "projections.h"
@@ -27,12 +28,17 @@ void test_black_density();
 
 void test_folder(string test_folder, string target_folder, int num_images);
 
-void test_location();
+float test_location();
+
+float test_location(int bs_prop, float brightness_threshold, int long_line_threshold, int transitions_threshold,
+                    int top_lines_to_check, double p, int rough_width, int rough_height, int resize_coeff);
 
 void test_recognition();
 
 void read_plate_numbers(string filename, vector<string> &numbers);
 
 void test_system();
+
+void find_localization_parameters();
 
 #endif //ALPR_CPP_TESTS_H

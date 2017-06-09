@@ -7,9 +7,10 @@ using namespace std;
 using namespace cv;
 
 int main() {
-    test_system();
+    test_location();
+//    find_localization_parameters();
 //    test_folder("images/G4/G4 (%d).jpg", "images/plates/tests/", 20);
-//    test_folder("images/medialab/day_color_small_sample//%d.jpg", "images/plates/tests/", 20);
+//    test_folder("images/medialab/%d.jpg", "images/plates/tests/", 100);
 //    test_folder("images/slika/%d.jpg", "images/plates/tests/", 20);
     exit(0);
 
