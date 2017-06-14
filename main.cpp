@@ -7,7 +7,7 @@ using namespace std;
 using namespace cv;
 
 void quick_test() {
-    Mat img = imread("images/medialab/5.jpg");
+    Mat img = imread("images/medialab/8.jpg");
     show(img);
     Mat plate;
     localize_license_plate(img, plate);
@@ -16,8 +16,9 @@ void quick_test() {
 int main() {
 //    quick_test(); exit(0);
 
+    train_svm();
 //    test_folder("images/G4/G4 (%d).jpg", "images/plates/tests/", 20);
-    test_folder("images/medialab/%d.jpg", "images/plates/tests/", 20);
+//    test_folder("images/medialab/%d.jpg", "images/plates/tests/", 20);
 //    test_folder("images/slika/%d.jpg", "images/plates/tests/", 20);
     exit(0);
 

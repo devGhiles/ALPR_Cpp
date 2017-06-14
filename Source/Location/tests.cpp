@@ -36,10 +36,10 @@ void test_candidate_plates(vector<Plaque> candidate_plates) {
 
 void svm_generate_plates_database() {
     int candidates_count = 0;
-    int num_images = 810;
-    int num_candidates = 4050;
+    int num_images = 100;
+    int num_candidates = 900;
     for (int i = 1; i <= num_images; i++) {
-        Mat img = imread("images/G1/G1 (" + to_string(i) + ").jpg");
+        Mat img = imread("images/medialab/" + to_string(i) + ".jpg");
         Mat plate;
         vector<Mat> candidates;
         localize_license_plate(img, plate, candidates);
