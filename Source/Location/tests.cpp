@@ -26,6 +26,14 @@ void test_candidate_plates(vector<Mat> candidate_plates) {
     }
 }
 
+void test_candidate_plates(vector<Plaque> candidate_plates) {
+    vector<Mat> plates;
+    for (Plaque plaque : candidate_plates) {
+        plates.push_back(plaque.plateImg);
+    }
+    test_candidate_plates(plates);
+}
+
 void svm_generate_plates_database() {
     int candidates_count = 0;
     int num_images = 810;

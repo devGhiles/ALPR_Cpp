@@ -134,7 +134,7 @@ int choose_using_svm(vector<Plaque> candidate_plates, Plaque &chosen_one) {
 }
 
 void filter_plates_by_ratio(vector<Mat> &candidate_plates) {
-    int min_ratio = 3, max_ratio = 6;
+    int min_ratio = 2, max_ratio = 5;
     vector<Mat> kept_plates;
     for (Mat plate : candidate_plates) {
         if (((plate.cols / plate.rows) >= min_ratio) && ((plate.cols / plate.rows) <= max_ratio)) {
@@ -145,7 +145,7 @@ void filter_plates_by_ratio(vector<Mat> &candidate_plates) {
 }
 
 void filter_plates_by_ratio(vector<Plaque> &candidate_plates) {
-    int min_ratio = 3, max_ratio = 6;
+    int min_ratio = 2, max_ratio = 5;
     vector<Plaque> kept_plates;
     for (Plaque plaque : candidate_plates) {
         Mat plate = plaque.plateImg;

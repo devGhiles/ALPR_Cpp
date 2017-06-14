@@ -1,7 +1,3 @@
-//
-// Created by ghiles on 4/1/17.
-//
-
 #include "location.h"
 
 void localize_license_plate(Mat src, Mat &dst) {
@@ -11,14 +7,13 @@ void localize_license_plate(Mat src, Mat &dst) {
 
 void localize_license_plate(Mat src, Mat &dst, vector<Mat> &candidate_plates) {
     // Declare variables and initialize parameters
-    Mat gray, h, v;
-    int bs_prop = 9;
+    int bs_prop = 10;
     int long_line_threshold = 20;
     int transitions_threshold = 7;
     int top_lines_to_check = 9;
     float brightness_threshold = 0.0f;
     double p = 0.3;
-    int rough_width = 90;
+    int rough_width = 100;
     int rough_height = 9;
 
     localize_license_plate(src, dst, candidate_plates, bs_prop, brightness_threshold, long_line_threshold,
@@ -65,7 +60,6 @@ void localize_license_plate(Mat src, Mat &dst, vector<Mat> &candidate_plates, in
 
 void localize_license_plate(Mat src, Plaque &plaque) {
     // Declare variables and initialize parameters
-    Mat gray, h, v;
     int bs_prop = 9;
     int long_line_threshold = 20;
     int transitions_threshold = 7;

@@ -6,11 +6,18 @@
 using namespace std;
 using namespace cv;
 
+void quick_test() {
+    Mat img = imread("images/medialab/5.jpg");
+    show(img);
+    Mat plate;
+    localize_license_plate(img, plate);
+}
+
 int main() {
-    test_location();
-//    find_localization_parameters();
+//    quick_test(); exit(0);
+
 //    test_folder("images/G4/G4 (%d).jpg", "images/plates/tests/", 20);
-//    test_folder("images/medialab/%d.jpg", "images/plates/tests/", 100);
+    test_folder("images/medialab/%d.jpg", "images/plates/tests/", 20);
 //    test_folder("images/slika/%d.jpg", "images/plates/tests/", 20);
     exit(0);
 

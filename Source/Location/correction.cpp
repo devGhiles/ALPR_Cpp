@@ -55,7 +55,7 @@ void col_correction_by_projections_in_v(Mat &plate) {
     // end_col
     int end_col;
     for (end_col = v.cols - 1; end_col > start_col; end_col--) {
-        if (projections[end_col] > stats::mean(projections, v.cols) * 1.6f) {
+        if (projections[end_col] > stats::mean(projections, v.cols) * 1.1f) {
             break;
         }
     }
