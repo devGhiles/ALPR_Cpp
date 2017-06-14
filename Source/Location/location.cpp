@@ -11,7 +11,6 @@ void localize_license_plate(Mat src, Mat &dst) {
 
 void localize_license_plate(Mat src, Mat &dst, vector<Mat> &candidate_plates) {
     // Declare variables and initialize parameters
-    Mat gray, h, v;
     int bs_prop = 9;
     int long_line_threshold = 20;
     int transitions_threshold = 7;
@@ -65,7 +64,6 @@ void localize_license_plate(Mat src, Mat &dst, vector<Mat> &candidate_plates, in
 
 void localize_license_plate(Mat src, Plaque &plaque) {
     // Declare variables and initialize parameters
-    Mat gray, h, v;
     int bs_prop = 9;
     int long_line_threshold = 20;
     int transitions_threshold = 7;
