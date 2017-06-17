@@ -13,6 +13,7 @@
 
 #include <opencv/cv.hpp>
 #include <iostream>
+#include "../Config.h"
 
 using namespace std;
 using namespace cv;
@@ -24,9 +25,11 @@ class OCRTarbia{
         void run();
 
         Ptr<SVM> svm;
+        HOT hot;
+        HOGDescriptor hog;
 
         string fichierTarbia;
-        string dossierTarbia;
+        const char *dossierTarbia = "E:\\PFE\\ALPR_C++\\Assets\\Char_Dataset\\_seg";
         int nbrClasses;
         int nbrTrainImgParClass;
         int nbrTestImgParClass;
@@ -35,15 +38,14 @@ class OCRTarbia{
         void SVMtrain(Mat &trainMat,vector<int> &trainLabels, Mat &testResponse,Mat &testMat, float c, float gamma);
         void SVMevaluate(Mat &testResponse,float &count, float &accuracy,vector<int> &testLabels);
         void loadTrainTestLabel(string &pathName, vector<Mat> &trainCells, vector<Mat> &testCells,vector<int> &trainLabels, vector<int> &testLabels);
-        void loadTrainTestLabelFromDataFolders(string &pathName, vector<Mat> &trainCells, vector<Mat> &testCells,vector<int> &trainLabels, vector<int> &testLabels);
+        void loadTrainTestLabelFromDataFolders(vector<Mat> &trainCells, vector<Mat> &testCells,vector<int> &trainLabels, vector<int> &testLabels);
     private:
+        Config config;
+        bool trained = true;
         void CreateDeskewedTrainTest(vector<Mat> &deskewedTrainCells,vector<Mat> &deskewedTestCells, vector<Mat> &trainCells, vector<Mat> &testCells);
         void ConvertVectortoMatrix(vector<vector<float> > &trainHOG, vector<vector<float> > &testHOG, Mat &trainMat, Mat &testMat);
         void printSVMParams(SVM *svm);
         Mat deskew(Mat& img);
-
-        vector<string> list_folder(string path);
-        vector<string> list_file(string folder_path);
 };
 
 #endif //OPENCV_TEST_OCRTARBIA_H

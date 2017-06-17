@@ -31,8 +31,9 @@ int choose_plate(vector<Plaque> candidate_plates, Plaque &chosen_one) {
     }
 }
 
-void choose_lowest(vector<Mat> candidate_plates, Mat &chosen_one) {
+int choose_lowest(vector<Mat> candidate_plates, Mat &chosen_one) {
     chosen_one = candidate_plates[0].clone();
+    return 0;
 }
 
 double average_brightness(Mat m) {
@@ -88,6 +89,8 @@ int choose_highest_average_brightness_in_v(vector<Mat> candidate_plates, Mat &ch
 int choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
     float max_score = -2.0f;
     int chosen_index = -1;
+    int first_index = -1, second_index = -1, third_index = -1;
+    float first_score = -1000.0f, second_score = -1000.0f, third_score = -1000.0f;
     Ptr<SVM> svm = Algorithm::load<ml::SVM>("svm_plates.xml");
     for (int i = 0; i < candidate_plates.size(); i++) {
         Mat plate = candidate_plates[i];
@@ -102,12 +105,49 @@ int choose_using_svm(vector<Mat> candidate_plates, Mat &chosen_one) {
             chosen_one = plate;
             chosen_index = i;
         }
+        // Top 3
+        if (score > first_score) {
+            third_score = second_score;
+            second_score = first_score;
+            first_score = score;
+            third_index = second_index;
+            second_index = first_index;
+            first_index = i;
+        } else if (score > second_score) {
+            third_score = second_score;
+            second_score = score;
+            third_index = second_index;
+            second_index = i;
+        } else if (score > third_score) {
+            third_score = score;
+            third_index = i;
+        }
 //        cout << "score: " << score << endl;
 //        show(plate);
     }
+
+    // Choose among top 3
+    vector<Mat> top_candidates;
+    if (first_index >= 0) {
+        top_candidates.push_back(candidate_plates[first_index].clone());
+    }
+    if (second_index >= 0) {
+        top_candidates.push_back(candidate_plates[second_index].clone());
+    }
+    if (third_index >= 0) {
+        top_candidates.push_back(candidate_plates[third_index].clone());
+    }
+    chosen_index = choose_using_ocr(top_candidates, chosen_one);
+
     chosen_one = chosen_one.clone();
     svm->clear();
-    return chosen_index;
+    if (chosen_index == 0) {
+        return first_index;
+    } else if (chosen_index == 1) {
+        return second_index;
+    } else {
+        return third_index;
+    }
 }
 
 int choose_using_svm(vector<Plaque> candidate_plates, Plaque &chosen_one) {
@@ -131,6 +171,36 @@ int choose_using_svm(vector<Plaque> candidate_plates, Plaque &chosen_one) {
     chosen_one.plateImg = chosen_one.plateImg.clone();
     svm->clear();
     return chosen_index;
+}
+
+int choose_using_ocr(vector<Mat> candidate_plates, Mat &chosen_one) {
+    OCR ocr;
+    int top_length = -1, top_length_index = -1;
+    for (int i = 0; i < candidate_plates.size(); i++) {
+        Mat plate = candidate_plates[i];
+        Plaque plaque(plate.clone(), Rect(0, 0, 0, 0));
+        convert_to_grayscale(plaque.plateImg, plaque.plateImg);
+        invert_grayscale(plaque.plateImg, plaque.plateImg);
+        String plateNumber = ocr.run(&plaque);
+
+        if (plateNumber.length() >= 7) {
+            chosen_one = plate.clone();
+            return i;
+        }
+
+        if ((plateNumber.length() < 7) && (plateNumber.length() > top_length)) {
+            top_length = (int) plateNumber.length();
+            cout << plateNumber << endl;
+            top_length_index = i;
+        }
+    }
+
+    if (top_length_index >= 0) {
+        chosen_one = candidate_plates[top_length_index].clone();
+        return top_length_index;
+    } else {
+        return -1;
+    }
 }
 
 void filter_plates_by_ratio(vector<Mat> &candidate_plates) {

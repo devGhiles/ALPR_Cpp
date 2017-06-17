@@ -48,4 +48,6 @@ float black_density(Mat binary_image);
 
 void convert_vector_to_mat(vector<vector<float>> v, Mat &m);
 
+void invert_grayscale(Mat src, Mat &dst);
+
 #endif //ALPR_CPP_OPENCV_H

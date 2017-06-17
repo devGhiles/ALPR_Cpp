@@ -137,3 +137,7 @@ void convert_vector_to_mat(vector<vector<float>> v, Mat &m) {
         }
     }
 }
+
+void invert_grayscale(Mat src, Mat &dst) {
+    bitwise_not (src, dst);
+}
